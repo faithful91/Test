@@ -13,11 +13,9 @@ public class Item extends CPolyLine {
 	private double y;
 
 	public Item(int id, double x, double y){
-
 		this.index = id;
 		this.x = x;
 		this.y = y;
-
 	}
 
 }
