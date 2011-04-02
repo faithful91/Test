@@ -24,13 +24,11 @@ public class Application extends JFrame {
 		canvas = new Canvas(800, 600);
 		try {
 			menu = new Menu(canvas, labels, colors);
-			System.out.println(menu.getCurrentState());
 		} catch (Exception ex) {
 			Logger.getLogger(Application.class.getName()).log(Level.SEVERE, null, ex);
 		}
 
 		canvas.attachSM(menu, true);
-		System.out.println();
 		this.add(canvas);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}

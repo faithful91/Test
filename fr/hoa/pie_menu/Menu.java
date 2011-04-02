@@ -17,7 +17,8 @@ public class Menu extends CStateMachine{
 	private Item[] items;
 
 	public Menu(Canvas canvas, String[] labels, Color[] colors) throws Exception{
-		super();
+		
+		// All the given arrays must have the same lengths
 		if(labels.length != colors.length){
 			throw new Exception("Menu :: Arrays with differents sizes");
 		}
@@ -26,37 +27,61 @@ public class Menu extends CStateMachine{
 		this.colors = colors;
 
 		this.items = new Item[labels.length];
+		
+		// Items initialization
 		for(int i = 0; i < this.items.length; i++){
-			this.items[i] = new Item( i, 0, 0);
+			this.items[i] = new Item(i, 0, 0);
+			
+			// Angles change
+			this.items[i].rotateTo(i * Math.PI / 4.0);
+			
+			// Sets the item's color
+			this.items[i].setFillPaint(colors[i]);
+			this.items[i].setDrawable(false).setPickable(false);
+			this.items[i].addTo(canvas);
+			this.items[i].addTag("menu");
 		}
-
 	}
 
-	private State none = new State("None") {
-		Transition releaseRight = new Release(MouseEvent.BUTTON3){
+	/**
+	 * Default state
+	 */
+	private State none = new State("Default") {
+		Transition pressRight = new Press(MouseEvent.BUTTON3, "Menu"){
 			public void action(){
-				canvas.removeAllShapes();
-				currentState = menu;
+
+				// Draws the menu and moves to the menu state
+				canvas.getTag("menu").translateTo(canvas.getMousePosition().x, canvas.getMousePosition().y);
+				canvas.getTag("menu").setDrawable(true).setPickable(true);
 			}
 		};
 	};
 
+	/**
+	 * Menu state : enabled when the pie menu is displayed
+	 */
 	private State menu = new State("Menu"){
-		Transition pressRight = new Press(MouseEvent.BUTTON3){
+
+		// When the mouse bouton is released, enable default state
+		Transition releaseRight = new Release(MouseEvent.BUTTON3, "Default"){
 			public void action(){
-				draw();
-				currentState = none;
+
+				Item selectedItem = (Item) (canvas.getTag("selected").getTopLeastShape());
+
+				canvas.setBackground((Color)selectedItem.getFillPaint());
+				canvas.getTag("menu").setDrawable(false).setPickable(false);
 			}
 		};
+
+		// When the mouse enters on a shape
+		Transition mouseMove = new EnterOnShape(){
+
+			@Override
+			public void action() {
+				canvas.getTag("menu").removeTag("selected");
+				getShape().addTag("selected");
+			}
+			
+		};
 	};
-
-	private void draw(){
-		for(Item i : this.items){
-			i.translateTo(canvas.getMousePosition().x, canvas.getMousePosition().y);
-			i.rotateTo(i.getIndex() * Math.PI / 4.0);
-			i.setFillPaint(colors[i.getIndex()]);
-			i.addTo(canvas);
-		}
-
-	}
 }

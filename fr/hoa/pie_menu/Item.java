@@ -23,7 +23,7 @@ public class Item extends CPolyLine {
 		this.moveTo(RADIUS, 0);
 		this.arcTo(0.0, angle, RADIUS, RADIUS);
 		this.lineTo(RADIUS_MIN * Math.cos(angle), -RADIUS_MIN * Math.sin(angle));
-		this.arcTo(angle, -Math.PI / 4.0, RADIUS_MIN, RADIUS_MIN);
+		this.arcTo(angle, -angle, RADIUS_MIN, RADIUS_MIN);
 		this.moveTo(0,0);
 		this.setReferencePoint(0,1);
 	}
