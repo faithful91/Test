@@ -67,14 +67,24 @@ public class Menu extends CStateMachine{
 			public void action(){
 
 				Item selectedItem = (Item) (canvas.getTag("selected").getTopLeastShape());
-
-				canvas.setBackground((Color)selectedItem.getFillPaint());
+				if(selectedItem != null)
+					canvas.setBackground((Color)selectedItem.getFillPaint());
 				canvas.getTag("menu").setDrawable(false).setPickable(false);
 			}
 		};
 
+		// When the mouse leaves a shape
+		Transition leaveShape = new LeaveOnTag("selected"){
+
+			@Override
+			public void action() {
+				getShape().removeTag("selected");
+			}
+			
+		};
+
 		// When the mouse enters on a shape
-		Transition mouseMove = new EnterOnShape(){
+		Transition enterShape = new EnterOnTag("menu"){
 
 			@Override
 			public void action() {
