@@ -11,6 +11,11 @@ import java.awt.event.*;
  */
 public class Menu extends CStateMachine{
 
+	private Canvas canvas;
+	private String[] labels;
+	private Color[] colors;
+
+
 	State neutre = new State("Neutre") {
 		Transition releaseRight = new Release(MouseEvent.BUTTON3){
 			public void action(){
@@ -30,11 +35,7 @@ public class Menu extends CStateMachine{
 			}
 		};
 	};
-
-	private Canvas canvas;
-	private String[] labels;
-	private Color[] colors;
-
+	
 	public Menu(Canvas canvas, String[] labels, Color[] colors) throws Exception{
 		super();
 		if(labels.length != colors.length){
