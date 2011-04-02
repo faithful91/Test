@@ -11,11 +11,32 @@ import java.awt.event.*;
  */
 public class Menu extends CStateMachine{
 
+	State neutre = new State("Neutre") {
+		Transition releaseRight = new Release(MouseEvent.BUTTON3){
+			public void action(){
+				System.out.println("Etat Neutre");
+				canvas.setBackground(Color.white);
+				currentState = menu;
+			}
+		};
+	};
+
+	State menu = new State("Menu"){
+		Transition pressRight = new Press(MouseEvent.BUTTON3){
+			public void action(){
+				System.out.println("Etat Menu");
+				canvas.setBackground(Color.red);
+				currentState = neutre;
+			}
+		};
+	};
+
 	private Canvas canvas;
 	private String[] labels;
 	private Color[] colors;
 
 	public Menu(Canvas canvas, String[] labels, Color[] colors) throws Exception{
+		super();
 		if(labels.length != colors.length){
 			throw new Exception("Menu :: Pas la meme taille");
 		}
@@ -24,11 +45,5 @@ public class Menu extends CStateMachine{
 		this.colors = colors;
 	}
 
-	State neutre = new State("Neutre") {
-		Transition releaseRight = new Release(MouseEvent.BUTTON3);
-	};
-
-	State menu = new State("Menu"){
-		Transition pressRight = new Press(MouseEvent.BUTTON3);
-	};
+	
 }
