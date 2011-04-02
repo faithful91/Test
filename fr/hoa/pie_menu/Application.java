@@ -17,8 +17,8 @@ public class Application extends JFrame {
 
 	public Application(){
 
-		Color[] colors = {Color.PINK, Color.MAGENTA, Color.ORANGE, Color.RED};
-		String[] labels = {"Rose", "Violet", "Orange", "Rouge"};
+		Color[] colors = {Color.PINK, Color.MAGENTA, Color.ORANGE, Color.RED, Color.PINK, Color.MAGENTA, Color.ORANGE, Color.RED};
+		String[] labels = {"Rose", "Violet", "Orange", "Rouge", "Rose", "Violet", "Orange", "Rouge"};
 
 		this.setSize(800, 600);
 		canvas = new Canvas(800, 600);

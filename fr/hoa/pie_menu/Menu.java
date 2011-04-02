@@ -14,37 +14,49 @@ public class Menu extends CStateMachine{
 	private Canvas canvas;
 	private String[] labels;
 	private Color[] colors;
+	private Item[] items;
 
+	public Menu(Canvas canvas, String[] labels, Color[] colors) throws Exception{
+		super();
+		if(labels.length != colors.length){
+			throw new Exception("Menu :: Arrays with differents sizes");
+		}
+		this.canvas = canvas;
+		this.labels = labels;
+		this.colors = colors;
 
-	State neutre = new State("Neutre") {
+		this.items = new Item[labels.length];
+		for(int i = 0; i < this.items.length; i++){
+			this.items[i] = new Item( i, 0, 0);
+		}
+
+	}
+
+	private State none = new State("None") {
 		Transition releaseRight = new Release(MouseEvent.BUTTON3){
 			public void action(){
-				System.out.println("Etat Neutre");
-				canvas.setBackground(Color.white);
+				canvas.removeAllShapes();
 				currentState = menu;
 			}
 		};
 	};
 
-	State menu = new State("Menu"){
+	private State menu = new State("Menu"){
 		Transition pressRight = new Press(MouseEvent.BUTTON3){
 			public void action(){
-				System.out.println("Etat Menu");
-				canvas.setBackground(Color.red);
-				currentState = neutre;
+				draw();
+				currentState = none;
 			}
 		};
 	};
-	
-	public Menu(Canvas canvas, String[] labels, Color[] colors) throws Exception{
-		super();
-		if(labels.length != colors.length){
-			throw new Exception("Menu :: Pas la meme taille");
-		}
-		this.canvas = canvas;
-		this.labels = labels;
-		this.colors = colors;
-	}
 
-	
+	private void draw(){
+		for(Item i : this.items){
+			i.translateTo(canvas.getMousePosition().x, canvas.getMousePosition().y);
+			i.rotateTo(i.getIndex() * Math.PI / 4.0);
+			i.setFillPaint(colors[i.getIndex()]);
+			i.addTo(canvas);
+		}
+
+	}
 }
