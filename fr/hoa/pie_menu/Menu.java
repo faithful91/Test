@@ -88,6 +88,7 @@ public class Menu extends CStateMachine{
 				if(lastSelectedItem != -1){
 					itemSelected();
 				}
+				canvas.getTag("item").setTransparencyFill(1);
 				canvas.getTag("menu").setDrawable(false).setPickable(false);
 			}
 		};
@@ -98,6 +99,7 @@ public class Menu extends CStateMachine{
 			@Override
 			public void action() {
 				lastSelectedItem = -1;
+				canvas.getTag("item").setTransparencyFill(1);
 			}	
 		};
 
@@ -106,10 +108,13 @@ public class Menu extends CStateMachine{
 
 			@Override
 			public void action() {
+				canvas.getTag("item").setTransparencyFill((float)0.5);
 				if(getShape() instanceof CText){
 					lastSelectedItem = ((Item)(getShape().getParent())).getIndex();
+					getShape().getParent().setTransparencyFill(1);
 				} else if(getShape() instanceof Item){
 					lastSelectedItem = ((Item)getShape()).getIndex();
+					getShape().setTransparencyFill(1);
 				}
 			}
 		};
