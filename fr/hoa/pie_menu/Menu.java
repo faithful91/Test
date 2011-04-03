@@ -14,7 +14,7 @@ import java.awt.event.*;
  */
 public class Menu extends CStateMachine{
 
-	final public static int RADIUS = 60;
+	final public static int RADIUS = 70;
 	final public static int RADIUS_MIN = 5;
 	private Canvas canvas;
 	private String[] labels;
