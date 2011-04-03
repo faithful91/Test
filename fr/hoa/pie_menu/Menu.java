@@ -4,6 +4,9 @@ import fr.lri.swingstates.sm.*;
 import fr.lri.swingstates.sm.transitions.Press;
 import fr.lri.swingstates.sm.transitions.Release;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.GradientPaint;
+import java.awt.Paint;
 import java.awt.event.*;
 
 /**
@@ -11,13 +14,15 @@ import java.awt.event.*;
  */
 public class Menu extends CStateMachine{
 
+	final public static int RADIUS = 60;
+	final public static int RADIUS_MIN = 5;
 	private Canvas canvas;
 	private String[] labels;
 	private Color[] colors;
-	private Item[] items;
+	private int lastSelectedItem;
+	private ActionListener actionListener;
 
 	public Menu(Canvas canvas, String[] labels, Color[] colors) throws Exception{
-		
 		// All the given arrays must have the same lengths
 		if(labels.length != colors.length){
 			throw new Exception("Menu :: Arrays with differents sizes");
@@ -25,21 +30,34 @@ public class Menu extends CStateMachine{
 		this.canvas = canvas;
 		this.labels = labels;
 		this.colors = colors;
-
-		this.items = new Item[labels.length];
+		this.lastSelectedItem = -1;
 		
 		// Items initialization
-		for(int i = 0; i < this.items.length; i++){
-			this.items[i] = new Item(i, 0, 0);
+		for(int i = 0; i < this.colors.length; i++){
+			Item item = new Item(i, 0, 0);
 			
 			// Angles change
-			this.items[i].rotateTo(i * Math.PI / 4.0);
+			item.rotateTo(i * Math.PI / 4.0);
 			
 			// Sets the item's color
-			this.items[i].setFillPaint(colors[i]);
-			this.items[i].setDrawable(false).setPickable(false);
-			this.items[i].addTo(canvas);
-			this.items[i].addTag("menu");
+			Paint fp = new GradientPaint(0, 0, colors[i], RADIUS, 0, colors[i].darker());
+			item.setFillPaint(fp);
+			item.setOutlinePaint(colors[i].darker());
+			item.setDrawable(false).setPickable(false);	
+			item.addTo(canvas);
+			item.addTag("menu").addTag("item");
+
+			// Adds the item's label
+			CText text = canvas.newText(0, 0, labels[i], new Font(Font.SANS_SERIF, Font.BOLD, 9));
+			text.rotateBy(-i * Math.PI/4.0);
+			text.translateTo(RADIUS/1.4, -1);
+			text.setParent(item);
+			text.setClip(item);
+			text.setFillPaint(colors[i].darker().darker().darker());
+			text.setAntialiased(true);
+			text.addTag("menu").addTag("label");
+			text.setDrawable(false).setPickable(false);
+			text.addTo(canvas);
 		}
 	}
 
@@ -48,10 +66,11 @@ public class Menu extends CStateMachine{
 	 */
 	private State none = new State("Default") {
 		Transition pressRight = new Press(MouseEvent.BUTTON3, "Menu"){
+			@Override
 			public void action(){
 
 				// Draws the menu and moves to the menu state
-				canvas.getTag("menu").translateTo(canvas.getMousePosition().x, canvas.getMousePosition().y);
+				canvas.getTag("item").translateTo(canvas.getMousePosition().x, canvas.getMousePosition().y);
 				canvas.getTag("menu").setDrawable(true).setPickable(true);
 			}
 		};
@@ -64,23 +83,22 @@ public class Menu extends CStateMachine{
 
 		// When the mouse bouton is released, enable default state
 		Transition releaseRight = new Release(MouseEvent.BUTTON3, "Default"){
+			@Override
 			public void action(){
-
-				Item selectedItem = (Item) (canvas.getTag("selected").getTopLeastShape());
-				if(selectedItem != null)
-					canvas.setBackground((Color)selectedItem.getFillPaint());
+				if(lastSelectedItem != -1){
+					itemSelected();
+				}
 				canvas.getTag("menu").setDrawable(false).setPickable(false);
 			}
 		};
 
 		// When the mouse leaves a shape
-		Transition leaveShape = new LeaveOnTag("selected"){
+		Transition leaveShape = new LeaveOnTag("menu"){
 
 			@Override
 			public void action() {
-				getShape().removeTag("selected");
-			}
-			
+				lastSelectedItem = -1;
+			}	
 		};
 
 		// When the mouse enters on a shape
@@ -88,10 +106,28 @@ public class Menu extends CStateMachine{
 
 			@Override
 			public void action() {
-				canvas.getTag("menu").removeTag("selected");
-				getShape().addTag("selected");
+				if(getShape() instanceof CText){
+					lastSelectedItem = ((Item)(getShape().getParent())).getIndex();
+				} else if(getShape() instanceof Item){
+					lastSelectedItem = ((Item)getShape()).getIndex();
+				}
 			}
-			
 		};
 	};
+
+	/**
+	 * Method called when an item is selected
+	 */
+	private void itemSelected(){
+		if(this.actionListener != null){
+			ActionEvent e = new ActionEvent(this, lastSelectedItem, "Click");
+			actionListener.actionPerformed(e);
+		}
+	};
+
+	public void setActionListener(ActionListener actionListener) {
+		this.actionListener = actionListener;
+	}
+
+
 }

@@ -1,14 +1,10 @@
 package fr.hoa.pie_menu;
-
 import fr.lri.swingstates.canvas.CPolyLine;
 /**
  *
  * @author Amirouche HALFAOUI
  */
 public class Item extends CPolyLine {
-
-	final public static int RADIUS = 100;
-	final public static int RADIUS_MIN = 10;
 
 	private int index;
 	private double x;
@@ -20,12 +16,12 @@ public class Item extends CPolyLine {
 
 		this.index = id;
 		this.setAntialiased(true);
-		this.moveTo(RADIUS, 0);
-		this.arcTo(0.0, angle, RADIUS, RADIUS);
-		this.lineTo(RADIUS_MIN * Math.cos(angle), -RADIUS_MIN * Math.sin(angle));
-		this.arcTo(angle, -angle, RADIUS_MIN, RADIUS_MIN);
+		this.moveTo(Menu.RADIUS * Math.cos(angle/2.0), Menu.RADIUS * Math.sin(angle/2.0));
+		this.arcTo(-angle/2.0, angle, Menu.RADIUS, Menu.RADIUS);
+		this.lineTo(Menu.RADIUS_MIN * Math.cos(angle/2.0), -Menu.RADIUS_MIN * Math.sin(angle/2.0));
+		this.arcTo(angle/2, -angle, Menu.RADIUS_MIN, Menu.RADIUS_MIN);
 		this.moveTo(0,0);
-		this.setReferencePoint(0,1);
+		this.setReferencePoint(0,0.5);
 	}
 
 	public int getIndex() {
