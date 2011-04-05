@@ -88,7 +88,7 @@ public class Menu extends CStateMachine{
 				Animation anim = new AnimationScaleTo(1, 1);
 				anim.setLapDuration(200);
 				anim.setFunction(Animation.FUNCTION_SIGMOID);
-				anim.setDelay(10);
+				anim.setDelay(1);
 				canvas.getTag("menu").setDrawable(true).setPickable(true);
 				canvas.getTag("menu").animate(anim);
 			}
