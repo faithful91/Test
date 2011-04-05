@@ -1,5 +1,7 @@
-package fr.hoa.pie_menu;
+package fr.hoa.pie_menu.variable;
+
 import fr.lri.swingstates.canvas.CPolyLine;
+
 /**
  *
  * @author Amirouche HALFAOUI
@@ -7,13 +9,9 @@ import fr.lri.swingstates.canvas.CPolyLine;
 public class Item extends CPolyLine {
 
 	private int index;
-	private double x;
-	private double y;
 
-	public Item(int id, double x, double y){
+	public Item(int id, double x, double y, double angle){
 		super(x, y);
-		float angle = (float) (Math.PI / 4.0);
-
 		this.index = id;
 		this.setAntialiased(true);
 		this.moveTo(Menu.RADIUS * Math.cos(angle/2.0), Menu.RADIUS * Math.sin(angle/2.0));

@@ -1,6 +1,9 @@
-package fr.hoa.pie_menu;
-import fr.lri.swingstates.canvas.*;
-import fr.lri.swingstates.sm.*;
+package fr.hoa.pie_menu.base;
+import fr.lri.swingstates.canvas.CStateMachine;
+import fr.lri.swingstates.canvas.CText;
+import fr.lri.swingstates.canvas.Canvas;
+import fr.lri.swingstates.sm.State;
+import fr.lri.swingstates.sm.Transition;
 import fr.lri.swingstates.sm.transitions.Press;
 import fr.lri.swingstates.sm.transitions.Release;
 import java.awt.Color;
@@ -17,23 +20,25 @@ public class Menu extends CStateMachine{
 	final public static int RADIUS = 70;
 	final public static int RADIUS_MIN = 5;
 	private Canvas canvas;
-	private String[] labels;
-	private Color[] colors;
 	private int lastSelectedItem;
 	private ActionListener actionListener;
 
 	public Menu(Canvas canvas, String[] labels, Color[] colors) throws Exception{
+		
+		// This menu supports only 8 items
+		if(labels.length != 8){
+			throw new Exception("Menu :: Wrong number of elements given. Designed to display only 8 items");
+		}
+
 		// All the given arrays must have the same lengths
 		if(labels.length != colors.length){
 			throw new Exception("Menu :: Arrays with differents sizes");
 		}
 		this.canvas = canvas;
-		this.labels = labels;
-		this.colors = colors;
 		this.lastSelectedItem = -1;
 		
 		// Items initialization
-		for(int i = 0; i < this.colors.length; i++){
+		for(int i = 0; i < colors.length; i++){
 			Item item = new Item(i, 0, 0);
 			
 			// Angles change
@@ -133,6 +138,4 @@ public class Menu extends CStateMachine{
 	public void setActionListener(ActionListener actionListener) {
 		this.actionListener = actionListener;
 	}
-
-
 }
