@@ -39,6 +39,5 @@ public class Application extends JFrame {
 
 		Application appli = new Application();
 		appli.setVisible(true);
-
 	}
 }
