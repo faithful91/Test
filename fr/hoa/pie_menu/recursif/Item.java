@@ -234,4 +234,17 @@ public class Item extends CPolyLine {
 			return false;
 		}
 	}
+
+	public Boolean isParent(Item item){
+		if(item == parent)
+			return true;
+		else if(isSubMenu){
+			for (int i = 0; i < subMenu.length; i++) {
+				if (subMenu[i].isParent(item)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }

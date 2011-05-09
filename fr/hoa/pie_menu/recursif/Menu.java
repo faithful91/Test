@@ -25,7 +25,7 @@ public class Menu extends CStateMachine{
 	private Canvas canvas;
 	private Item[] root;
 
-	private int lastSelectedItem;
+	private Item lastSelectedItem;
 
 	public Menu(Canvas canvas, Item[] items) throws Exception{
 
@@ -39,6 +39,18 @@ public class Menu extends CStateMachine{
 			root[i].drawIt(i, angle, RADIUS, RADIUS_MIN);
 		}
 		
+	}
+
+	public void closeSubMenu(){
+		for(int i = 0; i < root.length; i++){
+			if(root[i] != lastSelectedItem){
+				if(lastSelectedItem.isParent(root[i]))
+					return;
+				else
+					root[i].closeSubMenus();
+			}
+				
+		}
 	}
 
 	/**
@@ -70,7 +82,7 @@ public class Menu extends CStateMachine{
 		Transition releaseRight = new Release(MouseEvent.BUTTON3, "Default"){
 			@Override
 			public void action(){
-				if(lastSelectedItem != -1){
+				if(lastSelectedItem != null){
 
 				}
 				canvas.getTag("item-0").setTransparencyFill(1);
@@ -86,13 +98,14 @@ public class Menu extends CStateMachine{
 			@Override
 			public void action() {
 				Item i = null;
-				lastSelectedItem = -1;
 				if(getShape() instanceof CText){
 					i = (Item)getShape().getParent();
 				} else if(getShape() instanceof Item){
 					i = (Item)getShape();
 				}
 				i.onMouseLeave();
+				lastSelectedItem = i;
+				closeSubMenu();
 			}
 		};
 
