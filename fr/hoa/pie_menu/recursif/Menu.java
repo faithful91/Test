@@ -15,7 +15,7 @@ import java.awt.event.MouseEvent;
 
 /**
  *
- * @author Amirouche HALFAOUI
+ * @author De Cramer Oliver
  */
 public class Menu extends CStateMachine{
 
@@ -72,7 +72,14 @@ public class Menu extends CStateMachine{
 
 		// When the mouse bouton is released, enable default state
 		Transition releaseRight = new Release(MouseEvent.BUTTON3, "Default"){
-			
+			@Override
+			public void action(){
+				if(lastSelectedItem != -1){
+
+				}
+				canvas.getTag("item-1").setTransparencyFill(1);
+				canvas.getTag("menu-1").setDrawable(false).setPickable(false);
+			}
 		};
 
 		// When the mouse leaves a shape
@@ -80,6 +87,7 @@ public class Menu extends CStateMachine{
 			@Override
 			public void action() {
 				Item i = null;
+				lastSelectedItem = -1;
 				if(getShape() instanceof CText){
 					i = (Item)getShape().getParent();
 				} else if(getShape() instanceof Item){
