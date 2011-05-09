@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Timer;
 import java.util.TimerTask;
+import sun.security.x509.AVA;
 
 /**
  *
@@ -23,18 +24,23 @@ public class Item extends CPolyLine {
 	protected String label;
 	protected Color color;
 	protected Canvas canvas;
+	protected CText text;
+
 	protected int level;
 	protected int id;
 	protected int radiusMax;
 	protected int radiusMin;
+
 	protected Item[] subMenu = null;
 	protected Item parent = null;
 	protected Boolean isSubMenu = false;
 	protected Boolean isSubDrawed = false;
 	protected Boolean isSubShowed = false;
 	protected Timer timer;
-	protected CText text;
+
 	protected Boolean mouseIsIn = false;
+
+	protected ActionListener actionListener = null;
 
 	public Item(int id, String label, Color color, Canvas canvas, int level, Item parent) {
 		super(0, 0);
@@ -78,8 +84,6 @@ public class Item extends CPolyLine {
 
 		this.rotateTo(i * angle);
 
-		System.out.println(radius + "-" + radiusMin);
-
 		this.setAntialiased(true);
 		this.moveTo(radius * Math.cos(angle / 2.0), radius * Math.sin(angle / 2.0));
 		this.arcTo(-angle / 2.0, angle, radius, radius);
@@ -115,6 +119,10 @@ public class Item extends CPolyLine {
 		if (this.isSubMenu && !isSubDrawed) {
 			drawSubMenu();
 		}
+	}
+
+	public void setActionListener(ActionListener actionListener) {
+		this.actionListener = actionListener;
 	}
 
 	public void addChilds(Item[] sub) {
@@ -163,6 +171,7 @@ public class Item extends CPolyLine {
 
 			for (int i = 0; i < subMenu.length; i++) {
 				subMenu[i].closeSubMenus();
+				subMenu[i].onMouseLeave();
 			}
 			isSubShowed = false;
 		}
@@ -216,9 +225,47 @@ public class Item extends CPolyLine {
 		}
 	}
 
+	public void actionDo(){
+		System.out.println("Action");
+		if(actionListener != null){
+			ActionEvent e = new ActionEvent(this, id, "click");
+			actionListener.actionPerformed(e);
+		}
+	}
+
 	public int getId() {
 		return id;
 	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public Boolean getIsSubMenu() {
+		return isSubMenu;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public Item getParent() {
+		return parent;
+	}
+
+	public int getRadiusMax() {
+		return radiusMax;
+	}
+
+	public int getRadiusMin() {
+		return radiusMin;
+	}
+
+	
 
 	public Boolean getMouseIsIn() {
 		if (mouseIsIn) {

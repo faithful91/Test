@@ -3,6 +3,8 @@ import fr.hoa.pie_menu.recursif.Item;
 import fr.hoa.pie_menu.recursif.Menu;
 import fr.lri.swingstates.canvas.Canvas;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 
 /**
@@ -29,11 +31,19 @@ public class Application2 extends JFrame {
 			this.setSize(800, 600);
 			canvas = new Canvas(800, 600);
 
+			ActionListener colorChange = new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					Item i = (Item) e.getSource();
+					canvas.setBackground(i.getColor());
+				}
+			};
+
 			for(int i = 0; i < colors.length-1; i++){
 				items[i] = new Item(i+1, labels[i], colors[i], canvas);
+				items[i].setActionListener(colorChange);
 			}
 
-			items[colors.length-1] = subMenu(colors.length-1, colors[colors.length-1]);
+			items[colors.length-1] = subMenu(colors.length-1, colors[colors.length-1], colorChange);
 			
 			menu = new Menu(canvas, items);
 			this.add(canvas);
@@ -42,7 +52,7 @@ public class Application2 extends JFrame {
 			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
-	private Item subMenu(int i, Color c){
+	private Item subMenu(int i, Color c, ActionListener colorChange){
 
 		final Color[] colors = {Color.WHITE, Color.MAGENTA, Color.BLUE, Color.CYAN, Color.GREEN, Color.YELLOW, Color.ORANGE};
 		final String[] labels = {"Blanc", "Violet", "Bleu", "Cyan", "Vert", "Jaune", "Orange"};
@@ -52,6 +62,7 @@ public class Application2 extends JFrame {
 		
 		for(int cpt = 0; cpt < colors.length; cpt++){
 			items[cpt] = new Item(cpt+i, labels[cpt], colors[cpt], canvas, 2, smenu);
+			items[cpt].setActionListener(colorChange);
 		}
 
 		smenu.addChilds(items);

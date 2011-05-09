@@ -83,7 +83,7 @@ public class Menu extends CStateMachine{
 			@Override
 			public void action(){
 				if(lastSelectedItem != null){
-
+					lastSelectedItem.actionDo();
 				}
 				canvas.getTag("item-0").setTransparencyFill(1);
 				canvas.getTag("menu-0").setDrawable(false).setPickable(false);
