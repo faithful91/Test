@@ -67,6 +67,13 @@ public class Item extends CPolyLine {
 
 		radiusMax = radius;
 		this.radiusMin = radiusMin;
+		int parentId;
+
+		if(parent == null){
+			parentId = 0;
+		}else{
+			parentId = parent.getId();
+		}
 
 		this.rotateTo(i * angle);
 
@@ -88,7 +95,7 @@ public class Item extends CPolyLine {
 		this.addTo(canvas);
 
 		this.addTag("menu").addTag("item");
-		this.addTag("menu-"+level).addTag("item-"+level);
+		this.addTag("menu-"+parentId).addTag("item-"+parentId);
 
 		// Adds the item's label
 		text = canvas.newText(0, 0, label, new Font(Font.SANS_SERIF, Font.BOLD, 9));
@@ -99,9 +106,14 @@ public class Item extends CPolyLine {
 		text.setFillPaint(color.darker().darker().darker());
 		text.setAntialiased(true);
 		text.addTag("menu").addTag("label");
-		text.addTag("menu-"+level).addTag("label-"+level);
+		text.addTag("menu-"+parentId).addTag("label-"+parentId);
 		text.setDrawable(false).setPickable(false);
 		text.addTo(canvas);
+		
+		
+		if(this.isSubMenu && !isSubDrawed){
+			drawSubMenu();
+		}
 	}
 
 	public void addChilds(Item[] sub){
@@ -123,22 +135,20 @@ public class Item extends CPolyLine {
 
 	private void showSubMenu(){
 		// Draws the menu at the mouse position
-		canvas.getTag("item-"+(level+1)).translateTo(0,0);
-		canvas.getTag("menu-"+(level+1)).scaleTo(0);
+		canvas.getTag("item-"+id).translateTo(0,0);
+		canvas.getTag("menu-"+id).scaleTo(0);
 		Animation anim = new AnimationScaleTo(1, 1);
 		anim.setLapDuration(200);
 		anim.setFunction(Animation.FUNCTION_SIGMOID);
 		anim.setDelay(1);
-		canvas.getTag("menu-"+(level+1)).setDrawable(true).setPickable(true);
-		canvas.getTag("menu-"+(level+1)).animate(anim);
+		canvas.getTag("menu-"+id).setDrawable(true).setPickable(true);
+		canvas.getTag("menu-"+id).animate(anim);
 	}
 
 	public void onMouseEnter(){
 
 		if(this.isSubMenu){
-			if(!isSubDrawed){
-				drawSubMenu();
-			}
+
 			showSubMenu();
 		}
 
@@ -156,5 +166,8 @@ public class Item extends CPolyLine {
 		mouseIsIn = false;
 	}
 
+	public int getId(){
+		return id;
+	}
 
 }

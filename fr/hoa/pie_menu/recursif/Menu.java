@@ -22,14 +22,10 @@ public class Menu extends CStateMachine{
 	final public static int RADIUS = 70;
 	final public static int RADIUS_MIN = 5;
 
-	private int id;
-	private static int nbMenu = 0;
-
 	private Canvas canvas;
 	private Item[] root;
 
 	private int lastSelectedItem;
-	private ActionListener actionListener;
 
 	public Menu(Canvas canvas, Item[] items) throws Exception{
 
@@ -53,14 +49,14 @@ public class Menu extends CStateMachine{
 			@Override
 			public void action(){
 				// Draws the menu at the mouse position
-				canvas.getTag("item-1").translateTo(canvas.getMousePosition().x, canvas.getMousePosition().y);
-				canvas.getTag("menu-1").scaleTo(0);
+				canvas.getTag("item-0").translateTo(canvas.getMousePosition().x, canvas.getMousePosition().y);
+				canvas.getTag("menu-0").scaleTo(0);
 				Animation anim = new AnimationScaleTo(1, 1);
 				anim.setLapDuration(200);
 				anim.setFunction(Animation.FUNCTION_SIGMOID);
 				anim.setDelay(1);
-				canvas.getTag("menu-1").setDrawable(true).setPickable(true);
-				canvas.getTag("menu-1").animate(anim);
+				canvas.getTag("menu-0").setDrawable(true).setPickable(true);
+				canvas.getTag("menu-0").animate(anim);
 			}
 		};
 	};
@@ -77,8 +73,8 @@ public class Menu extends CStateMachine{
 				if(lastSelectedItem != -1){
 
 				}
-				canvas.getTag("item-1").setTransparencyFill(1);
-				canvas.getTag("menu-1").setDrawable(false).setPickable(false);
+				canvas.getTag("item-0").setTransparencyFill(1);
+				canvas.getTag("menu-0").setDrawable(false).setPickable(false);
 			}
 		};
 

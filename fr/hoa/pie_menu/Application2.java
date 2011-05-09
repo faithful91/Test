@@ -30,7 +30,7 @@ public class Application2 extends JFrame {
 			canvas = new Canvas(800, 600);
 
 			for(int i = 0; i < colors.length-1; i++){
-				items[i] = new Item(i, labels[i], colors[i], canvas);
+				items[i] = new Item(i+1, labels[i], colors[i], canvas);
 			}
 
 			items[colors.length-1] = subMenu(colors.length-1, colors[colors.length-1]);
@@ -51,7 +51,7 @@ public class Application2 extends JFrame {
 		Item smenu = new Item(i, labels[i], colors[i], canvas);
 		
 		for(int cpt = 0; cpt < colors.length; cpt++){
-			items[cpt] = new Item(cpt, labels[cpt], colors[cpt], canvas, 2, smenu);
+			items[cpt] = new Item(cpt+i, labels[cpt], colors[cpt], canvas, 2, smenu);
 		}
 
 		smenu.addChilds(items);
