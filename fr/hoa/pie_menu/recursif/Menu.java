@@ -75,6 +75,9 @@ public class Menu extends CStateMachine{
 				}
 				canvas.getTag("item-0").setTransparencyFill(1);
 				canvas.getTag("menu-0").setDrawable(false).setPickable(false);
+				for(int i = 0; i < root.length; i++){
+					root[i].closeSubMenus();
+				}
 			}
 		};
 

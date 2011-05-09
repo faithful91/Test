@@ -30,6 +30,7 @@ public class Item extends CPolyLine {
 	protected Item parent = null;
 	protected Boolean isSubMenu = false;
 	protected Boolean isSubDrawed = false;
+	protected Boolean isSubShowed = false;
 
 	protected CText text;
 
@@ -77,7 +78,7 @@ public class Item extends CPolyLine {
 
 		this.rotateTo(i * angle);
 
-		System.out.println(radius);
+		System.out.println(radius+"-"+radiusMin);
 
 		this.setAntialiased(true);
 		this.moveTo(radius * Math.cos(angle/2.0), radius * Math.sin(angle/2.0));
@@ -127,7 +128,7 @@ public class Item extends CPolyLine {
 		double angle = Math.PI * 2 / subMenu.length;
 
 		for(int i = 0; i < subMenu.length; i++){
-			subMenu[i].drawIt(i, angle, (radiusMax-radiusMin)+radiusMin, radiusMax);
+			subMenu[i].drawIt(i, angle, (radiusMax-radiusMin)+radiusMax, radiusMax);
 		}
 
 		isSubDrawed = true;
@@ -135,7 +136,8 @@ public class Item extends CPolyLine {
 
 	private void showSubMenu(){
 		// Draws the menu at the mouse position
-		canvas.getTag("item-"+id).translateTo(0,0);
+		canvas.getTag("item-"+id).translateTo(this.getMinX(),this.getMaxY());
+		
 		canvas.getTag("menu-"+id).scaleTo(0);
 		Animation anim = new AnimationScaleTo(1, 1);
 		anim.setLapDuration(200);
@@ -145,29 +147,62 @@ public class Item extends CPolyLine {
 		canvas.getTag("menu-"+id).animate(anim);
 	}
 
+	public void closeSubMenus(){
+		if(isSubMenu){
+			canvas.getTag("menu-"+id).setDrawable(false).setPickable(false);
+			for(int i = 0; i < subMenu.length; i++){
+				subMenu[i].closeSubMenus();
+			}
+			isSubShowed = false;
+		}
+	}
+
 	public void onMouseEnter(){
 
-		if(this.isSubMenu){
+		if(!mouseIsIn){
+			if(this.isSubMenu && !isSubShowed){
 
-			showSubMenu();
+				showSubMenu();
+				isSubShowed = true;
+			}
+
+			this.setTransparencyFill((float)0.5);
+			mouseIsIn = true;
 		}
-
-		this.setTransparencyFill((float)0.5);
-		mouseIsIn = true;
 
 	}
 
 	public void onMouseLeave(){
-		if(this.isSubMenu){
-			//@todo
-		}else{
-			this.setTransparencyFill((float)1);
+		if(mouseIsIn){
+			mouseIsIn = false;
+			if(this.isSubMenu){
+
+				if(!getMouseIsIn()){
+					this.setTransparencyFill((float)1);
+					System.out.println("close");
+					//closeSubMenus();
+				}
+
+			}else{
+				this.setTransparencyFill((float)1);
+			}
 		}
-		mouseIsIn = false;
 	}
 
 	public int getId(){
 		return id;
 	}
 
+	public Boolean getMouseIsIn() {
+		if(mouseIsIn)
+			return true;
+		else if(isSubMenu){
+			for(int i = 0; i < subMenu.length; i++){
+				if(subMenu[i].getMouseIsIn())
+					return true;
+			}
+			return false;
+		}else
+			return false;
+	}
 }
