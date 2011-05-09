@@ -38,11 +38,12 @@ public class Application2 extends JFrame {
 				}
 			};
 
-			for(int i = 0; i < colors.length-1; i++){
+			for(int i = 0; i < colors.length-2; i++){
 				items[i] = new Item(i+1, labels[i], colors[i], canvas);
 				items[i].setActionListener(colorChange);
 			}
 
+			items[colors.length-2] = subMenu(colors.length-2, colors[colors.length-2], colorChange);
 			items[colors.length-1] = subMenu(colors.length-1, colors[colors.length-1], colorChange);
 			
 			menu = new Menu(canvas, items);

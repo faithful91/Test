@@ -2,6 +2,7 @@ package fr.hoa.pie_menu.recursif;
 
 import fr.lri.swingstates.animations.Animation;
 import fr.lri.swingstates.animations.AnimationScaleTo;
+import fr.lri.swingstates.canvas.CElement;
 import fr.lri.swingstates.canvas.CPolyLine;
 import fr.lri.swingstates.canvas.CText;
 import fr.lri.swingstates.canvas.Canvas;
@@ -24,7 +25,10 @@ public class Item extends CPolyLine {
 	protected String label;
 	protected Color color;
 	protected Canvas canvas;
+
 	protected CText text;
+	protected double transPosX;
+	protected double transPosY;
 
 	protected int level;
 	protected int id;
@@ -144,7 +148,7 @@ public class Item extends CPolyLine {
 
 	private void showSubMenu() {
 		// Draws the menu at the mouse position
-		canvas.getTag("item-" + id).translateTo(this.getMinX(), this.getMaxY());
+		canvas.getTag("item-" + id).translateTo(transPosX, transPosY);
 
 		canvas.getTag("menu-" + id).scaleTo(0.8);
 		Animation anim = new AnimationScaleTo(1, 1);
@@ -294,4 +298,13 @@ public class Item extends CPolyLine {
 		}
 		return false;
 	}
+
+	@Override
+	public CElement translateTo(double x, double y) {
+		transPosX = x;
+		transPosY = y;
+		return super.translateTo(x, y);
+	}
+
+
 }
