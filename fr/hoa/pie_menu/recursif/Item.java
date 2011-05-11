@@ -47,12 +47,15 @@ public class Item extends CPolyLine {
 	 */
 	protected CText text;
 
+	private double angleSize;
+
 	/**
 	 * Si une translation est effectuée celle-ci est de combien.
 	 * Celle-ci peut être utilise pour afficher les sous menu dans un certain SubMenuStyle.
 	 */
 	protected double transPosX;
 	protected double transPosY;
+	protected int rotated;
 
 	/**
 	 * Le niveau de l'Item par rapport ou sous menu. Il peut etre aussi calculer mais on le garde dans une variable
@@ -181,6 +184,8 @@ public class Item extends CPolyLine {
 
 		radiusMax = radius;
 		this.radiusMin = radiusMin;
+		this.angleSize = angle;
+
 		int parentId;
 
 		if (itemParent == null) {
@@ -211,7 +216,10 @@ public class Item extends CPolyLine {
 
 		// Adds the item's label
 		text = canvas.newText(0, 0, label, new Font(Font.SANS_SERIF, Font.BOLD, 9));
-		text.rotateBy(-i * angle);
+
+		if(itemParent == null || itemParent.getStyle() != STYLE_TRANCHE)
+			text.rotateBy(-i * angle);
+
 		text.translateTo(radius / 1.4, -1);
 		text.setParent(this);
 		text.setClip(this);
@@ -247,6 +255,7 @@ public class Item extends CPolyLine {
 	}
 	
 	private void drawSubMenu() {
+		SubMenuStyle=2;
 		System.out.println("Stryle : "+SubMenuStyle +" Id : "+id);
 
 		double angle = Math.PI * 2 / subMenu.length;
@@ -264,6 +273,8 @@ public class Item extends CPolyLine {
 
 		for (int i = 0; i < subMenu.length; i++) {
 			subMenu[i].drawIt(i, angle, rmax, rmin);
+			if(SubMenuStyle == STYLE_TRANCHE)
+				subMenu[i].rotateBy(this.getRotation() - (angleSize/2));
 		}
 
 		isSubDrawed = true;

@@ -44,7 +44,7 @@ public class Application2 extends JFrame {
 			}
 
 			items[colors.length-3] = subMenu(colors.length, colors[colors.length-3], colorChange);
-			items[colors.length-3].setStyle(Item.STYLE_CERCLES);
+			//items[colors.length-3].setStyle(Item.STYLE_CERCLES);
 
 			items[colors.length-2] = subMenu(colors.length+10, colors[colors.length-2], colorChange);
 			items[colors.length-1] = subMenu(colors.length+20, colors[colors.length-1], colorChange);
