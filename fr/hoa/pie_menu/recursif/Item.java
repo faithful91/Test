@@ -119,10 +119,6 @@ public class Item extends CPolyLine {
 		text.setDrawable(false).setPickable(false);
 		text.addTo(canvas);
 
-
-		if (this.isSubMenu && !isSubDrawed) {
-			drawSubMenu();
-		}
 	}
 
 	public void setActionListener(ActionListener actionListener) {
@@ -140,7 +136,7 @@ public class Item extends CPolyLine {
 		double angle = Math.PI * 2 / subMenu.length;
 
 		for (int i = 0; i < subMenu.length; i++) {
-			subMenu[i].drawIt(i, angle, (radiusMax - radiusMin) + radiusMax, radiusMax);
+			subMenu[i].drawIt(i, angle, radiusMax, radiusMin);
 		}
 
 		isSubDrawed = true;
@@ -148,7 +144,14 @@ public class Item extends CPolyLine {
 
 	private void showSubMenu() {
 		// Draws the menu at the mouse position
-		canvas.getTag("item-" + id).translateTo(transPosX, transPosY);
+		if (!isSubDrawed) {
+			drawSubMenu();
+		}
+		double px, py;
+		px = this.getCenterX() + (this.getCenterX() - transPosX)*2;
+		py = this.getCenterY() + (this.getCenterY() - transPosY)*2;
+
+		canvas.getTag("item-" + id).translateTo(px, py);
 
 		canvas.getTag("menu-" + id).scaleTo(0.8);
 		Animation anim = new AnimationScaleTo(1, 1);
@@ -160,7 +163,7 @@ public class Item extends CPolyLine {
 	}
 
 	public void closeSubMenus() {
-		if (isSubMenu) {
+		if (isSubMenu & isSubDrawed) {
 			timer = null;
 
 			canvas.getTag("menu-" + id).setDrawable(false).setPickable(false);

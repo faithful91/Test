@@ -38,11 +38,12 @@ public class Application2 extends JFrame {
 				}
 			};
 
-			for(int i = 0; i < colors.length-2; i++){
+			for(int i = 0; i < colors.length-3; i++){
 				items[i] = new Item(i+1, labels[i], colors[i], canvas);
 				items[i].setActionListener(colorChange);
 			}
 
+			items[colors.length-3] = subMenu(colors.length-3, colors[colors.length-3], colorChange);
 			items[colors.length-2] = subMenu(colors.length-2, colors[colors.length-2], colorChange);
 			items[colors.length-1] = subMenu(colors.length-1, colors[colors.length-1], colorChange);
 			
@@ -55,11 +56,11 @@ public class Application2 extends JFrame {
 
 	private Item subMenu(int i, Color c, ActionListener colorChange){
 
-		final Color[] colors = {Color.WHITE, Color.MAGENTA, Color.BLUE, Color.CYAN, Color.GREEN, Color.YELLOW, Color.ORANGE};
-		final String[] labels = {"Blanc", "Violet", "Bleu", "Cyan", "Vert", "Jaune", "Orange"};
+		final Color[] colors = { Color.MAGENTA, Color.BLUE, Color.CYAN, Color.GREEN, Color.YELLOW, Color.ORANGE};
+		final String[] labels = {"Violet", "Bleu", "Cyan", "Vert", "Jaune", "Orange"};
 		final Item[] items = new Item[labels.length];
 
-		Item smenu = new Item(i, labels[i], colors[i], canvas);
+		Item smenu = new Item(i, "Sub Menu", c, canvas);
 		
 		for(int cpt = 0; cpt < colors.length; cpt++){
 			items[cpt] = new Item(cpt+i, labels[cpt], colors[cpt], canvas, 2, smenu);
