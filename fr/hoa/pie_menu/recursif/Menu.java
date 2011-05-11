@@ -27,8 +27,14 @@ public class Menu extends CStateMachine{
 
 	private Item lastSelectedItem;
 
-	public Menu(Canvas canvas, Item[] items) throws Exception{
+	private int style = 0;
 
+	/**
+	 *
+	 * @param canvas Le canvas a utilise pour dessiner l’Item
+	 * @param items la liste des Item
+	 */
+	public Menu(Canvas canvas, Item[] items){
 		root = items;
 		// items' angle is relative to the items' number
 		double angle = Math.PI * 2 / items.length;
@@ -36,11 +42,14 @@ public class Menu extends CStateMachine{
 		this.canvas = canvas;
 
 		for(int i = 0; i < root.length; i++){
+			root[i].setStyle(style);
 			root[i].drawIt(i, angle, RADIUS, RADIUS_MIN);
 		}
-		
 	}
 
+	/**
+	 * Ferme tous les menu sauf le menu root
+	 */
 	public void closeSubMenu(){
 		for(int i = 0; i < root.length; i++){
 			if(root[i] != lastSelectedItem){
@@ -82,7 +91,7 @@ public class Menu extends CStateMachine{
 		Transition releaseRight = new Release(MouseEvent.BUTTON3, "Default"){
 			@Override
 			public void action(){
-				if(lastSelectedItem != null){
+				if(lastSelectedItem != null && lastSelectedItem.getMouseIsIn()){
 					lastSelectedItem.actionDo();
 				}
 				canvas.getTag("item-0").setTransparencyFill(1);
