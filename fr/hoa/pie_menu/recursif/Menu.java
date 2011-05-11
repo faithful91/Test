@@ -27,8 +27,6 @@ public class Menu extends CStateMachine{
 
 	private Item lastSelectedItem;
 
-	private int style = 0;
-
 	/**
 	 *
 	 * @param canvas Le canvas a utilise pour dessiner l’Item
@@ -42,7 +40,6 @@ public class Menu extends CStateMachine{
 		this.canvas = canvas;
 
 		for(int i = 0; i < root.length; i++){
-			root[i].setStyle(style);
 			root[i].drawIt(i, angle, RADIUS, RADIUS_MIN);
 		}
 	}

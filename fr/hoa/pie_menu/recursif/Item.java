@@ -14,7 +14,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Timer;
 import java.util.TimerTask;
-import sun.security.x509.AVA;
 
 /**
  *
@@ -37,9 +36,9 @@ public class Item extends CPolyLine {
 	protected Color color;
 
 	/**
-	 * Le canvas dans le qu'elle en va dessiner.
+	 * Le Itemcanvas dans le qu'elle en va dessiner.
 	 */
-	protected Canvas canvas;
+	protected Canvas Itemcanvas;
 
 	/**
 	 * Pour pouvoir afficher le label on va le placer dans un CText. C'est celui-ci
@@ -122,7 +121,7 @@ public class Item extends CPolyLine {
 	 * @param id		Le numéro d’identification de l’Item.
 	 * @param label		Le label de l’item.
 	 * @param color		Le couleur de l’item
-	 * @param canvas	Le canvas a utilise pour dessiner l’Item
+	 * @param Itemcanvas	Le Itemcanvas a utilise pour dessiner l’Item
 	 * @param level		Le niveau de l'Item par rapport ou sous menu
 	 * @param Parent	L’Item itemParent de cette Item
 	 * @param style		Le SubMenuStyle avec le qu'elle doit s'afficher le Menu
@@ -133,9 +132,9 @@ public class Item extends CPolyLine {
 		this.color = color;
 		this.level = level;
 		this.id = id;
-		this.canvas = canvas;
+		this.Itemcanvas = canvas;
 		this.itemParent = parent;
-		this.SubMenuStyle = style;
+		SubMenuStyle = style;
 	}
 
 	/**
@@ -144,7 +143,7 @@ public class Item extends CPolyLine {
 	 * @param id		Le numéro d’identification de l’Item.
 	 * @param label		Le label de l’item.
 	 * @param color		Le couleur de l’item
-	 * @param canvas	Le canvas a utilise pour dessiner l’Item
+	 * @param Itemcanvas	Le Itemcanvas a utilise pour dessiner l’Item
 	 * @param level		Le niveau de l'Item par rapport ou sous menu
 	 * @param itemParent	L’Item itemParent de cette Item
 	 */
@@ -156,7 +155,7 @@ public class Item extends CPolyLine {
 	 * @param id		Le numéro d’identification de l’Item.
 	 * @param label		Le label de l’item.
 	 * @param color		Le couleur de l’item
-	 * @param canvas	Le canvas a utilise pour dessiner l’Item
+	 * @param Itemcanvas	Le Itemcanvas a utilise pour dessiner l’Item
 	 * @param SubMenuStyle		Le SubMenuStyle avec le qu'elle doit s'afficher le Menu
 	 */
 	public Item(int id, String label, Color color, Canvas canvas, int style) {
@@ -167,7 +166,7 @@ public class Item extends CPolyLine {
 	 * @param id		Le numéro d’identification de l’Item.
 	 * @param label		Le label de l’item.
 	 * @param color		Le couleur de l’item
-	 * @param canvas	Le canvas a utilise pour dessiner l’Item
+	 * @param Itemcanvas	Le Itemcanvas a utilise pour dessiner l’Item
 	 */
 	public Item(int id, String label, Color color, Canvas canvas) {
 		this(id, label, color, canvas, 0, null, STYLE_DEFAULT);
@@ -181,6 +180,7 @@ public class Item extends CPolyLine {
 	 * @param radiusMin	 La taille du Cercle Interieur
 	 */
 	public void drawIt(int i, double angle, int radius, int radiusMin) {
+
 
 		radiusMax = radius;
 		this.radiusMin = radiusMin;
@@ -209,13 +209,13 @@ public class Item extends CPolyLine {
 		this.setFillPaint(fp);
 		this.setOutlined(false);
 		this.setDrawable(false).setPickable(false);
-		this.addTo(canvas);
+		this.addTo(Itemcanvas);
 
 		this.addTag("menu").addTag("item");
 		this.addTag("menu-" + parentId).addTag("item-" + parentId);
 
 		// Adds the item's label
-		text = canvas.newText(0, 0, label, new Font(Font.SANS_SERIF, Font.BOLD, 9));
+		text = Itemcanvas.newText(0, 0, label, new Font(Font.SANS_SERIF, Font.BOLD, 9));
 
 		if(itemParent == null || itemParent.getStyle() != STYLE_TRANCHE)
 			text.rotateBy(-i * angle);
@@ -228,7 +228,7 @@ public class Item extends CPolyLine {
 		text.addTag("menu").addTag("label");
 		text.addTag("menu-" + parentId).addTag("label-" + parentId);
 		text.setDrawable(false).setPickable(false);
-		text.addTo(canvas);
+		text.addTo(Itemcanvas);
 	}
 
 	/**
@@ -255,8 +255,6 @@ public class Item extends CPolyLine {
 	}
 	
 	private void drawSubMenu() {
-		SubMenuStyle=2;
-		System.out.println("Stryle : "+SubMenuStyle +" Id : "+id);
 
 		double angle = Math.PI * 2 / subMenu.length;
 
@@ -270,11 +268,15 @@ public class Item extends CPolyLine {
 			if(SubMenuStyle == STYLE_TRANCHE)
 				angle = angle/6;
 		}
-
+		
 		for (int i = 0; i < subMenu.length; i++) {
 			subMenu[i].drawIt(i, angle, rmax, rmin);
-			if(SubMenuStyle == STYLE_TRANCHE)
+			if(SubMenuStyle == STYLE_TRANCHE){
 				subMenu[i].rotateBy(this.getRotation() - (angleSize/2));
+				if(this.getRotation() > Math.PI -  Math.PI/2 && this.getRotation() < (Math.PI + Math.PI/2)){
+					subMenu[i].text.rotateBy( Math.PI);
+				}
+			}
 		}
 
 		isSubDrawed = true;
@@ -295,30 +297,30 @@ public class Item extends CPolyLine {
 			py = transPosY;
 		}
 
-		canvas.getTag("item-" + id).translateTo(px, py);
+		Itemcanvas.getTag("item-" + id).translateTo(px, py);
 
-		canvas.getTag("menu-" + id).scaleTo(0.8);
+		Itemcanvas.getTag("menu-" + id).scaleTo(0.8);
 		Animation anim = new AnimationScaleTo(1, 1);
 		anim.setLapDuration(200);
 		anim.setFunction(Animation.FUNCTION_SIGMOID);
 		anim.setDelay(1);
-		canvas.getTag("menu-" + id).setDrawable(true).setPickable(true);
-		canvas.getTag("menu-" + id).animate(anim);
+		Itemcanvas.getTag("menu-" + id).setDrawable(true).setPickable(true);
+		Itemcanvas.getTag("menu-" + id).animate(anim);
 	}
 
 	public void closeSubMenus() {
 		if (isSubMenu & isSubDrawed) {
 			timer = null;
 
-			canvas.getTag("menu-" + id).setDrawable(false).setPickable(false);
+			Itemcanvas.getTag("menu-" + id).setDrawable(false).setPickable(false);
 
-			canvas.getTag("menu-" + id).scaleTo(1);
+			Itemcanvas.getTag("menu-" + id).scaleTo(1);
 			Animation anim = new AnimationScaleTo(0.8, 0.8);
 			anim.setLapDuration(200);
 			anim.setFunction(Animation.FUNCTION_SIGMOID);
 			anim.setDelay(1);
-			canvas.getTag("menu-" + id).setDrawable(false).setPickable(false);
-			canvas.getTag("menu-" + id).animate(anim);
+			Itemcanvas.getTag("menu-" + id).setDrawable(false).setPickable(false);
+			Itemcanvas.getTag("menu-" + id).animate(anim);
 
 			for (int i = 0; i < subMenu.length; i++) {
 				subMenu[i].closeSubMenus();

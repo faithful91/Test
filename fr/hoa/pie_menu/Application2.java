@@ -44,9 +44,11 @@ public class Application2 extends JFrame {
 			}
 
 			items[colors.length-3] = subMenu(colors.length, colors[colors.length-3], colorChange);
-			//items[colors.length-3].setStyle(Item.STYLE_CERCLES);
+			items[colors.length-3].setStyle(Item.STYLE_CERCLES);
 
 			items[colors.length-2] = subMenu(colors.length+10, colors[colors.length-2], colorChange);
+			items[colors.length-2].setStyle(Item.STYLE_TRANCHE);
+
 			items[colors.length-1] = subMenu(colors.length+20, colors[colors.length-1], colorChange);
 			
 			menu = new Menu(canvas, items);
@@ -61,7 +63,7 @@ public class Application2 extends JFrame {
 		final String[] labels = {"Violet", "Bleu", "Cyan", "Vert", "Jaune", "Orange"};
 		final Item[] items = new Item[labels.length];
 
-		Item smenu = new Item(i, "Sub Menu", c, canvas, Item.STYLE_CERCLES);
+		Item smenu = new Item(i, "Sub Menu", c, canvas);
 
 		for(int cpt = 0; cpt < colors.length; cpt++){
 			items[cpt] = new Item(cpt+i+1, labels[cpt], colors[cpt], canvas, 2, smenu);
