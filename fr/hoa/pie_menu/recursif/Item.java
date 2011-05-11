@@ -464,16 +464,36 @@ public class Item extends CPolyLine {
 	 * @param item l'Item que on veut controler.
 	 * @return Si oui ou non l'item passe en parametre est le itemParent ou arriere grand itemParent de cette Item.
 	 */
-	public Boolean isParent(Item item){
-		if(item == itemParent)
+	public Boolean isFamilly(Item item){
+		if(itemParent != null && (item.id == this.id || item.id == itemParent.id) )
 			return true;
 		else if(isSubMenu){
-			for (int i = 0; i < subMenu.length; i++) {
-				if (subMenu[i].isParent(item)) {
-					return true;
-				}
+			if(isParent(item))
+				return true;
+		}else if(itemParent!= null){
+			return isParent2(item, itemParent);
+		}
+		return false;
+	}
+
+	public Boolean isParent(Item item){
+		if(!isSubMenu){
+			return false;
+		}
+		for (int i = 0; i < subMenu.length; i++) {
+			if (subMenu[i].isParent(item)) {
+				return true;
 			}
 		}
+		return false;
+	}
+
+	public Boolean isParent2(Item item, Item check){
+		if(check.itemParent != null && check.itemParent.id == item.id)
+			return true;
+		else if(check.itemParent != null)
+			return isParent2(item, check.itemParent);
+
 		return false;
 	}
 

@@ -50,7 +50,7 @@ public class Menu extends CStateMachine{
 	public void closeSubMenu(){
 		for(int i = 0; i < root.length; i++){
 			if(root[i] != lastSelectedItem){
-				if(lastSelectedItem.isParent(root[i]))
+				if(lastSelectedItem.isFamilly(root[i]))
 					return;
 				else
 					root[i].closeSubMenus();
