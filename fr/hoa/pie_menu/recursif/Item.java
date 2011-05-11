@@ -65,6 +65,7 @@ public class Item extends CPolyLine {
 	 * Le numéro d’identification de l’Item
 	 */
 	private int id;
+	private static int nbItem = 0;
 
 	/**
 	 * La taille du Cercle Exterieur et Interieur.
@@ -126,12 +127,13 @@ public class Item extends CPolyLine {
 	 * @param Parent	L’Item itemParent de cette Item
 	 * @param style		Le SubMenuStyle avec le qu'elle doit s'afficher le Menu
 	 */
-	public Item(int id, String label, Color color, Canvas canvas, int level, Item parent, int style) {
+	public Item(String label, Color color, Canvas canvas, int level, Item parent, int style) {
 		super(0, 0);
 		this.label = label;
 		this.color = color;
 		this.level = level;
-		this.id = id;
+		this.id = nbItem;
+		nbItem++;
 		this.Itemcanvas = canvas;
 		this.itemParent = parent;
 		SubMenuStyle = style;
@@ -147,8 +149,8 @@ public class Item extends CPolyLine {
 	 * @param level		Le niveau de l'Item par rapport ou sous menu
 	 * @param itemParent	L’Item itemParent de cette Item
 	 */
-	public Item(int id, String label, Color color, Canvas canvas, int level, Item parent) {
-		this(id, label, color, canvas, level, parent, STYLE_DEFAULT);
+	public Item(String label, Color color, Canvas canvas, int level, Item parent) {
+		this(label, color, canvas, level, parent, STYLE_DEFAULT);
 	}
 
 	/**
@@ -158,8 +160,8 @@ public class Item extends CPolyLine {
 	 * @param Itemcanvas	Le Itemcanvas a utilise pour dessiner l’Item
 	 * @param SubMenuStyle		Le SubMenuStyle avec le qu'elle doit s'afficher le Menu
 	 */
-	public Item(int id, String label, Color color, Canvas canvas, int style) {
-		this(id, label, color, canvas, 0, null, style);
+	public Item(String label, Color color, Canvas canvas, int style) {
+		this(label, color, canvas, 0, null, style);
 	}
 	
 	/**
@@ -168,8 +170,8 @@ public class Item extends CPolyLine {
 	 * @param color		Le couleur de l’item
 	 * @param Itemcanvas	Le Itemcanvas a utilise pour dessiner l’Item
 	 */
-	public Item(int id, String label, Color color, Canvas canvas) {
-		this(id, label, color, canvas, 0, null, STYLE_DEFAULT);
+	public Item(String label, Color color, Canvas canvas) {
+		this(label, color, canvas, 0, null, STYLE_DEFAULT);
 	}
 
 	/**
@@ -180,7 +182,6 @@ public class Item extends CPolyLine {
 	 * @param radiusMin	 La taille du Cercle Interieur
 	 */
 	public void drawIt(int i, double angle, int radius, int radiusMin) {
-
 
 		radiusMax = radius;
 		this.radiusMin = radiusMin;
@@ -268,7 +269,7 @@ public class Item extends CPolyLine {
 			if(SubMenuStyle == STYLE_TRANCHE)
 				angle = angle/6;
 		}
-		
+
 		for (int i = 0; i < subMenu.length; i++) {
 			subMenu[i].drawIt(i, angle, rmax, rmin);
 			if(SubMenuStyle == STYLE_TRANCHE){
