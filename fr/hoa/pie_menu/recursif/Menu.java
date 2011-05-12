@@ -14,17 +14,35 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 
 /**
+ *	Permet de Cree un PieMenu
  *
  * @author De Cramer Oliver
  */
 public class Menu extends CStateMachine{
 
+	/**
+	 * Le rayon minimum du cercle du premier menu.
+	 */
 	final public static int RADIUS = 70;
+
+	/**
+	 * Le rayon maximum du cercle du premier niveau
+	 */
 	final public static int RADIUS_MIN = 5;
 
+	/**
+	 * Le Itemcanvas dans le qu'elle en va dessiner le menu.
+	 */
 	private Canvas canvas;
+
+	/**
+	 * La liste des item di menu root.
+	 */
 	private Item[] root;
 
+	/**
+	 * Le dernier Item qui a etr selectionne par l'utilisateur.
+	 */
 	private Item lastSelectedItem;
 
 	/**
@@ -110,8 +128,8 @@ public class Menu extends CStateMachine{
 					i = (Item)getShape();
 				}
 				i.onMouseLeave();
-				lastSelectedItem = i;
 				closeSubMenu();
+				lastSelectedItem = null;
 			}
 		};
 
@@ -126,6 +144,7 @@ public class Menu extends CStateMachine{
 					i = (Item)getShape();
 				}
 				i.onMouseEnter();
+				lastSelectedItem = i;
 			}
 		};
 	};

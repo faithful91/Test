@@ -43,10 +43,10 @@ public class Application2 extends JFrame {
 				items[i].setActionListener(colorChange);
 			}
 
-			items[colors.length-3] = subMenu(colors[colors.length-3], colorChange, 2, null);
+			items[colors.length-3] = subMenu2(colors[colors.length-3], colorChange);
 			items[colors.length-3].setStyle(Item.STYLE_CERCLES);
 
-			items[colors.length-2] = subMenu(colors[colors.length-2], colorChange, 2, null);
+			items[colors.length-2] = subMenu2(colors[colors.length-2], colorChange);
 			items[colors.length-2].setStyle(Item.STYLE_TRANCHE);
 
 			items[colors.length-1] = subMenu2(colors[colors.length-1], colorChange);
@@ -59,8 +59,8 @@ public class Application2 extends JFrame {
 	}
 
 	private Item subMenu(Color c, ActionListener colorChange, int level, Item parent){
-		final Color[] colors = { Color.MAGENTA, Color.BLUE, Color.CYAN, Color.GREEN, Color.YELLOW, Color.ORANGE};
-		final String[] labels = {"Violet", "Bleu", "Cyan", "Vert", "Jaune", "Orange"};
+		final Color[] colors = {Color.GRAY, Color.MAGENTA, Color.BLUE, Color.CYAN, Color.GREEN, Color.YELLOW, Color.ORANGE};
+		final String[] labels = {"Gris", "Violet", "Bleu", "Cyan", "Vert", "Jaune", "Orange"};
 		final Item[] items = new Item[labels.length];
 
 		Item smenu = new Item("Sub Menu", c, canvas, level-1, parent);
