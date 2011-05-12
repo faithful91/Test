@@ -17,8 +17,8 @@ public class Application extends JFrame {
 
 	public Application() throws Exception{
 			super("Pie-Menu - Designed by HOA Studios");
-			final Color[] colors = {Color.WHITE, Color.MAGENTA, Color.BLUE, Color.CYAN, Color.GREEN, Color.YELLOW, Color.ORANGE};
-			final String[] labels = {"Blanc", "Violet", "Bleu", "Cyan", "Vert", "Jaune", "Orange"};
+			final Color[] colors = {Color.WHITE, Color.MAGENTA, Color.BLUE, Color.CYAN, Color.GREEN, Color.YELLOW, Color.ORANGE, Color.WHITE, Color.MAGENTA, Color.BLUE, Color.CYAN, Color.GREEN, Color.YELLOW, Color.ORANGE};
+			final String[] labels = {"Blanc", "Violet", "Bleu", "Cyan", "Vert", "Jaune", "Orange", "Blanc", "Violet", "Bleu", "Cyan", "Vert", "Jaune", "Orange"};
 
 			this.setSize(800, 600);
 			canvas = new Canvas(800, 600);

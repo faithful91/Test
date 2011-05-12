@@ -17,50 +17,87 @@ import java.awt.event.*;
  */
 public class Menu extends CStateMachine{
 
+	/** Constante définissant le rayon externe du pie-menu */
 	final public static int RADIUS = 70;
+
+	/** Constante définissant le rayon interne du pie menu */
 	final public static int RADIUS_MIN = 5;
+
+	/** Référence vers le canvas auquel est attaché le menu */
 	private Canvas canvas;
+
+	/** Permet de stocker le dernier item sélectionné */
 	private int lastSelectedItem;
+
+	/** Ecouteur des choix d'items */
 	private ActionListener actionListener;
 
+	/**
+	 * Constructeur du menu.
+	 * Initialise l'ensemble des attributs et prépare le dessin en vue de l'affichage
+	 * @param canvas Référence vers le canvas où est dessiné le menu
+	 * @param labels Textes contenus dans les différents items
+	 * @param colors Couleurs des différents items
+	 * @throws Exception Lève une exception si les tableaux n'ont pas tous deux exactement 8 éléments
+	 */
 	public Menu(Canvas canvas, String[] labels, Color[] colors) throws Exception{
 		
-		// This menu supports only 8 items
+		// Le menu supporte uniquement 8 items
 		if(labels.length != 8){
 			throw new Exception("Menu :: Wrong number of elements given. Designed to display exactly 8 items");
 		}
 
-		// All the given arrays must have the same lengths
+		// Tous les tableaux en paramètre doivent avoir les mêmes dimensions
 		if(labels.length != colors.length){
 			throw new Exception("Menu :: Arrays with differents sizes");
 		}
+
+		// Stockage des attributs
 		this.canvas = canvas;
 		this.lastSelectedItem = -1;
 		
-		// Items initialization
+		// Initialisation des items
 		for(int i = 0; i < colors.length; i++){
 			Item item = new Item(i, 0, 0);
 			
-			// Angles change
+			// On prépare l'angle de dessin
 			item.rotateTo(i * Math.PI / 4.0);
 			
-			// Sets the item's color
+			// Couleur de l'item
 			Paint fp = new GradientPaint(0, 0, colors[i], RADIUS, 0, colors[i].darker());
 			item.setFillPaint(fp);
+
+			// Couleur des contours
 			item.setOutlinePaint(colors[i].darker());
-			item.setDrawable(false).setPickable(false);	
+
+			// Au départ le menu est masqué
+			item.setDrawable(false).setPickable(false);
+
+			// On ajoute les items au canvas
 			item.addTo(canvas);
+
+			// On ajoute les bons tags pour un accès rapide plus tard
 			item.addTag("menu").addTag("item");
 
-			// Adds the item's label
+			// Ajoute le label associé à l'item
 			CText text = canvas.newText(0, 0, labels[i], new Font(Font.SANS_SERIF, Font.BOLD, 9));
+
+			// Application de la rotation pour qu'il soit lisible
 			text.rotateBy(-i * Math.PI/4.0);
 			text.translateTo(RADIUS/1.4, -1);
+
+			// On attache le texte à l'item
 			text.setParent(item);
+
+			// Zone de clipping restreinte à l'item pour éviter les débordements de textes
 			text.setClip(item);
 			text.setFillPaint(colors[i].darker().darker().darker());
 			text.setAntialiased(true);
+
+			// On ajoute les tags particuliers
 			text.addTag("menu").addTag("label");
+
+			// Non visible au départ
 			text.setDrawable(false).setPickable(false);
 			text.addTo(canvas);
 		}
