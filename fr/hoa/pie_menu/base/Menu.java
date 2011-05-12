@@ -104,14 +104,19 @@ public class Menu extends CStateMachine{
 	}
 
 	/**
-	 * Default state
+	 * Etat par défaut. Le menu n'y est pas affiché.
+	 * On intercepte le clic droit pour passer à l'état où le menu est affiché.
 	 */
 	private State none = new State("Default") {
+
+		/**
+		 * Transition au clic droit
+		 */
 		Transition pressRight = new Press(MouseEvent.BUTTON3, "Menu"){
 			@Override
 			public void action(){
 
-				// Draws the menu and moves to the menu state
+				// Affiche le menu sous le curseur avant de changer d'état
 				canvas.getTag("item").translateTo(canvas.getMousePosition().x, canvas.getMousePosition().y);
 				canvas.getTag("menu").setDrawable(true).setPickable(true);
 			}
@@ -119,11 +124,11 @@ public class Menu extends CStateMachine{
 	};
 
 	/**
-	 * Menu state : enabled when the pie menu is displayed
+	 * Etat menu : actif lorsque le menu est affiché
 	 */
 	private State menu = new State("Menu"){
 
-		// When the mouse bouton is released, enable default state
+		// Retour à l'état par défaut lorsque la souris est relachée
 		Transition releaseRight = new Release(MouseEvent.BUTTON3, "Default"){
 			@Override
 			public void action(){
@@ -163,15 +168,32 @@ public class Menu extends CStateMachine{
 	};
 
 	/**
-	 * Method called when an item is selected
+	 * Méthde appelée lorsque un élément du menu a été choisi
 	 */
 	private void itemSelected(){
+
+		// S'il existe un écouteur d'événements, on le déclenche
 		if(this.actionListener != null){
+
+			/* L'élément déclencheur est le menu, l'id est celui de l'item sélectionné.
+			 * Et l'action a été provoquée par un clic
+			 */
 			ActionEvent e = new ActionEvent(this, lastSelectedItem, "Click");
+			
+			// lancement de la methode voulue par l'utilisateur
 			actionListener.actionPerformed(e);
 		}
 	};
 
+	/**
+	 * Permet de définir l'écouteur d'événements du menu
+	 * Cet écouteur déclenchera l'action définie par l'utilisateur
+	 * en lui passant en paramètres :
+	 *  - ID : celui de l'item choisi
+	 *  - Déclencheur : Une référence vers cet objet menu
+	 *  - Action "Click"
+	 * @param actionListener Ecouteur défini par l'utilisateur
+	 */
 	public void setActionListener(ActionListener actionListener) {
 		this.actionListener = actionListener;
 	}
