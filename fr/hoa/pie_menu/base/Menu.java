@@ -169,11 +169,22 @@ public class Menu extends CStateMachine{
 
 				// On rend les autres items transparents pour se concentrer sur celui sélectionné
 				canvas.getTag("item").setTransparencyFill((float)0.5);
+				
+				// Cas particulier si la souris est sur le texte ou sur l'item lui même
 				if(getShape() instanceof CText){
+
+					// Récupération de l'index de l'item survolé
 					lastSelectedItem = ((Item)(getShape().getParent())).getIndex();
+
+					// Affichage particulier pour feedback
 					getShape().getParent().setTransparencyFill(1);
+
 				} else if(getShape() instanceof Item){
+
+					// Récupération de l'index de l'item survolé
 					lastSelectedItem = ((Item)getShape()).getIndex();
+					
+					// Affichage particulier pour feedback
 					getShape().setTransparencyFill(1);
 				}
 			}
@@ -181,7 +192,7 @@ public class Menu extends CStateMachine{
 	};
 
 	/**
-	 * Méthde appelée lorsque un élément du menu a été choisi
+	 * Méthode appelée lorsque un élément du menu a été choisi
 	 */
 	private void itemSelected(){
 
