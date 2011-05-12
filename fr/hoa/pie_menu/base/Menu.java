@@ -128,33 +128,46 @@ public class Menu extends CStateMachine{
 	 */
 	private State menu = new State("Menu"){
 
-		// Retour à l'état par défaut lorsque la souris est relachée
+		/** Retour à l'état par défaut lorsque la souris est relachée */
 		Transition releaseRight = new Release(MouseEvent.BUTTON3, "Default"){
 			@Override
 			public void action(){
+
+				// Si un item a été sélectionné, on provoque l'action définie par l'utilisateur
 				if(lastSelectedItem != -1){
 					itemSelected();
 				}
+
+				// On remet tout proprement comme au départ
 				canvas.getTag("item").setTransparencyFill(1);
 				canvas.getTag("menu").setDrawable(false).setPickable(false);
 			}
 		};
 
-		// When the mouse leaves a shape
+		/** Lorque la souris quitte un élément du menu (Texte ou Item) */
 		Transition leaveShape = new LeaveOnTag("menu"){
 
 			@Override
 			public void action() {
+
+				// Il n'y a plus d'item sélectionné
 				lastSelectedItem = -1;
+
+				// On remet tous les items tels qu'ils étaient au départ
 				canvas.getTag("item").setTransparencyFill(1);
 			}	
 		};
 
-		// When the mouse enters on a shape
+		/**
+		 * Transition lorsque la souris franchit le menu
+		 * On cherche à savoir l'item sélectionné
+		 */
 		Transition enterShape = new EnterOnTag("menu"){
 
 			@Override
 			public void action() {
+
+				// On rend les autres items transparents pour se concentrer sur celui sélectionné
 				canvas.getTag("item").setTransparencyFill((float)0.5);
 				if(getShape() instanceof CText){
 					lastSelectedItem = ((Item)(getShape().getParent())).getIndex();
