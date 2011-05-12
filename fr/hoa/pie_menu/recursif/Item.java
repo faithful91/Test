@@ -363,7 +363,7 @@ public class Item extends CPolyLine {
 	 * @brief Ferme le sous menu si celui ci est ouvert.
 	 */
 	public void closeSubMenus() {
-		if (isSubMenu & isSubDrawed) {
+		if (isSubMenu && isSubDrawed && Itemcanvas.getTag("menu-" + id)!=null) {
 			timer = null;
 
 			Itemcanvas.getTag("menu-" + id).setDrawable(false).setPickable(false);
@@ -414,7 +414,7 @@ public class Item extends CPolyLine {
 		if (mouseIsIn) {
 
 			mouseIsIn = false;
-			if (this.isSubMenu) {
+			if (this.isSubMenu){
 
 				if (!getMouseIsIn()) {
 					
