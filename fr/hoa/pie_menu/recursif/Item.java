@@ -22,138 +22,135 @@ import java.util.TimerTask;
 public class Item extends CPolyLine {
 
 	/**
-	 * Le style par default avec le qu'elle s'ouvrira les sous menu.
-	 *
-	 * Ce style ouvrira un nouveau pie menu a coter de l4Item qui est son parent.
+	 * Style par default avec lequel s'ouvrira les sous-menus
+	 * Ce style ouvrira un nouveau pie menu a cote de l'item parent
 	 */
 	final public static int STYLE_DEFAULT = 0;
 
 	/**
-	 * Ce style ouvrira un nouveau cerlce plus grand autour de son parent.
+	 * Ce style ouvrira un nouveau cercle plus grand autour de son parent
 	 */
 	final public static int STYLE_CERCLES = 1;
 
 	/**
-	 * Ce style ouvrira un epouventail a cote de l4item qui est son parent.
+	 * Ce style ouvrira un epouvantail a cote de l'item parent
 	 */
 	final public static int STYLE_TRANCHE = 2;
 
 	/**
-	 * Le label de l’item.
+	 * label de l'item
 	 */
 	protected String label;
 
 	/**
-	 * La couleur de l'item. Utilise pour mettre un fond d'une certaine couleur en arrière plan.
+	 * La couleur de l'item. Utilise pour mettre un fond d'une certaine couleur en arriere plan
 	 */
 	protected Color color;
 
 	/**
-	 * Le Itemcanvas dans le qu'elle en va dessiner.
+	 * Itemcanvas dans lequel on va dessiner
 	 */
 	protected Canvas Itemcanvas;
 
 	/**
-	 * Pour pouvoir afficher le label on va le placer dans un CText. C'est celui-ci
-	 * Il va être initié par la fonction drawIt
+	 * Pour pouvoir afficher le label, on va le placer dans un CText
+	 * Il va etre initialise par la fonction drawIt
 	 */
 	protected CText text;
 
 	private double angleSize;
 
 	/**
-	 * Si une translation est effectuée celle-ci est de combien.
-	 * Celle-ci peut être utilise pour afficher les sous menu dans un certain SubMenuStyle.
+	 * Si une translation est effectuee, quel valeur a t'elle
+	 * Celle-ci peut etre utilisee pour afficher les sous-menus dans un certain SubMenuStyle
 	 */
 	protected double transPosX;
 	protected double transPosY;
 	protected int rotated;
 
 	/**
-	 * Le niveau de l'Item par rapport ou sous menu. Il peut etre aussi calculer mais on le garde dans une variable
+	 * Le niveau de l'item par rapport au sous menu. Il peut etre aussi calcule mais on le garde dans une variable
 	 */
 	private int level;
 
 	/**
-	 * Le nombre total d'Item qui a te cree.
-	 * Permet le calcul d'un ID unique par Item.
+	 * Le nombre total d'item qui ont ete crees
+	 * Permet le calcul d'un ID unique par Item
 	 */
 	protected static int nbItem = 0;
 
 	/**
-	 * Le numéro d’identification de l’Item
-	 *
-	 * Celui ci est tres important, surtout pour les sous menu qui utiliseront celui de leur parent comme tag.
-	 * Il est calcule automatiquement.
+	 * Le numero d'identification de l'item
+	 * Celui ci est tres important, surtout pour les sous-menus qui utiliseront celui de leur parent comme tag
+	 * Il est calcule automatiquement
 	 */
 	private int id;
 
 	/**
-	 * La taille du Cercle Exterieur et Interieur.
-	 * Dans certain type d’affichage nous allons utiliser des tailles variables. 
+	 * La taille du cercle exterieur et interieur
+	 * Dans certain type d'affichage, nous allons utilise des tailles variables
 	 */
 	protected int radiusMax;
 	protected int radiusMin;
 
 	/**
-	 * Les Item du sous menu de cette Item.
-	 * Chaque Item peut avoir son propre sous Menu, sans limite de récursivité.
+	 * Les items du sous-menu de cette item
+	 * Chaque item peut avoir son propre sous-menu, sans limite de recursivite
 	 */
 	private Item[] subMenu = null;
 
 	/**
-	 * Si oui ou non cette Item a un sous menu.
+	 * Si oui ou non cette item a un sous menu
 	 */
 	private Boolean isSubMenu = false;
 
 	/*
-	 * Le style avec le qu'elle doit s'ouvrir le sous menu de cette Item si il existe.
+	 * Le style avec lequel doit s'ouvrir le sous-menu de cette item s'il existe
 	 */
 	private int SubMenuStyle;
 	/**
-	 * L’Item itemParent de cette Item si celui-ci appartiens a un sous menu.
+	 * L'item itemParent de cette item si celui-ci appartient a un sous-menu
 	 */
 	private Item itemParent = null;
 
 	/**
-	 * Nous permet de savoir si le Sous Menu de cette Item a déjà été dessiner ou pas.
-	 * Nous considérons le Sous menu dessiner quand la fonction drawSubMenu a été appelé
+	 * Nous permet de savoir si le sous-menu de cette item a deja ete dessine ou non
+	 * Nous considerons le sous-menu dessine quand la fonction drawSubMenu a ete appele
 	 */
 	protected Boolean isSubDrawed = false;
 
 	/**
-	 * Nous permet de savoir si le sous menu est actuellement affiche ou pas.
+	 * Nous permet de savoir si le sous-menu est actuellement affiche ou pas
 	 */
 	protected Boolean isSubShowed = false;
 
 	/**
-	 * Un timer pour que le sous Menu ne se ferme pas Imediatement.
+	 * Un timer pour que le sous-menu ne se ferme pas immediatement
 	 */
 	private Timer timer;
 
 	/**
-	 * Permet de verifier si la souris est actuellement sur l'Item ou pas.
+	 * Permet de verifier si la souris est actuellement sur l'item ou non
 	 */
 	private Boolean mouseIsIn = false;
 
 	/**
-	 * Un action listener pour definir l'action de cette Item.
+	 * Un action listener pour definir l'action de cette item
 	 */
 	private ActionListener actionListener = null;
 
 	/**
-	 * @brief Le constructor a utilise si l'Item appartient a un sous menu et a lui meme un sous menu.
+	 * @brief Le constructeur a utilise si l'Item appartient a un sous-menu et a, lui meme, un sous-menu
+	 * Car il permet a l'item d'avoir un parent, chose obligatoire pour un sous-menu
+	 * Il lui permet aussi de determiner un style pour ses sous-menus
 	 *
-	 * Car il permet a l'Item d'avoir un parent, chose obligatoire pour un sous menu
-	 * Il lui permet aussi de determiner un style pour ses sous menu
-	 *
-	 * @param id			Le numéro d’identification de l’Item.
-	 * @param label			Le label de l’item.
-	 * @param color			Le couleur de l’item
-	 * @param Itemcanvas	Le Itemcanvas a utilise pour dessiner l’Item
-	 * @param level			Le niveau de l'Item par rapport ou sous menu
-	 * @param Parent		L’Item itemParent de cette Item
-	 * @param style			Le SubMenuStyle avec le qu'elle doit s'afficher le Menu
+	 * @param id			Le numero d'identification de l'item
+	 * @param label			Le label de l'item
+	 * @param color			La couleur de l'item
+	 * @param Itemcanvas	L'itemcanvas a utilise pour dessiner l'item
+	 * @param level			Le niveau de l'item par rapport au sous-menu
+	 * @param Parent		L'item itemParent de cette item
+	 * @param style			Le SubMenuStyle avec lequel doit s'afficher le menu
 	 */
 	public Item(String label, Color color, Canvas canvas, int level, Item parent, int style) {
 		super(0, 0);
@@ -168,50 +165,49 @@ public class Item extends CPolyLine {
 	}
 
 	/**
-	 * @brief Le constructor a utilise si l'Item appartient a un sous menu.
+	 * @brief Le constructeur a utilise si l'item appartient a un sous-menu
+	 *Il peut aussi etre utilise s'il a un sous menu de style default
 	 *
-	 * Il peut aussi etre utilisé si il a un sous menu de style default.
-	 *
-	 * @param id			Le numéro d’identification de l’Item.
-	 * @param label			Le label de l’item.
-	 * @param color			Le couleur de l’item
-	 * @param Itemcanvas	Le Itemcanvas a utilise pour dessiner l’Item
-	 * @param level			Le niveau de l'Item par rapport ou sous menu
-	 * @param itemParent	L’Item itemParent de cette Item
+	 * @param id			Le numero d'identification de l'item
+	 * @param label			Le label de l'item
+	 * @param color			La couleur de l'item
+	 * @param Itemcanvas	L' Itemcanvas a utilise pour dessiner l'item
+	 * @param level			Le niveau de l'item par rapport au sous-menu
+	 * @param itemParent	L'item itemParent de cette item
 	 */
 	public Item(String label, Color color, Canvas canvas, int level, Item parent) {
 		this(label, color, canvas, level, parent, STYLE_DEFAULT);
 	}
 
 	/**
-	 * @brief Le constructor a utilise si l'Item est dans le root et a un sous menu
+	 * @brief Le constructeur a utilise si l'item est dans la racine et a un sous-menu
 	 *
-	 * @param id			Le numéro d’identification de l’Item.
-	 * @param label			Le label de l’item.
-	 * @param color			Le couleur de l’item
-	 * @param Itemcanvas	Le Itemcanvas a utilise pour dessiner l’Item
-	 * @param SubMenuStyle	Le SubMenuStyle avec le qu'elle doit s'afficher le Menu
+	 * @param id			Le numero d'identification de l'item
+	 * @param label			Le label de l'item
+	 * @param color			La couleur de l'item
+	 * @param Itemcanvas	L'Itemcanvas a utilise pour dessiner l'item
+	 * @param SubMenuStyle	Le SubMenuStyle avec lequel doit s'afficher le menu
 	 */
 	public Item(String label, Color color, Canvas canvas, int style) {
 		this(label, color, canvas, 0, null, style);
 	}
-	
+
 	/**
-	 * @param id		Le numéro d’identification de l’Item.
-	 * @param label		Le label de l’item.
-	 * @param color		Le couleur de l’item
-	 * @param Itemcanvas	Le Itemcanvas a utilise pour dessiner l’Item
+	 * @param id		Le numero d'identification de l'item
+	 * @param label		Le label de l'item
+	 * @param color		La couleur de l'item
+	 * @param Itemcanvas	L'Itemcanvas a utilise pour dessiner l'item
 	 */
 	public Item(String label, Color color, Canvas canvas) {
 		this(label, color, canvas, 0, null, STYLE_DEFAULT);
 	}
 
 	/**
-	 * 
-	 * @param i			Le i eme élément de ce menu (sous menu)
-	 * @param angle		C'est l'angle de l'Item. la taille si on veut.
-	 * @param radius	La taille du Cercle Exterieur
-	 * @param radiusMin	 La taille du Cercle Interieur
+	 *
+	 * @param i			Le i eme element de ce menu (sous-menu)
+	 * @param angle		C'est l'angle de l'item. la taille si on veut
+	 * @param radius	La taille du cercle exterieur
+	 * @param radiusMin	 La taille du cercle interieur
 	 */
 	public void drawIt(int i, double angle, int radius, int radiusMin) {
 
@@ -275,7 +271,7 @@ public class Item extends CPolyLine {
 	}
 
 	/**
-	 * @brief L'action a effectuer quand cette Item est utilisé
+	 * @brief L'action a effectuer quand cette item est utilise
 	 *
 	 * @param actionListener
 	 */
@@ -284,12 +280,12 @@ public class Item extends CPolyLine {
 	}
 
 	/**
-	 * @brief Permet d'ajouter un sous menu a cette Item.
+	 * @brief Permet d'ajouter un sous-menu a cette item
 	 *
-	 * Quand cette fonction est utilise la variable isSubMenu est mis a true automatiquement
-	 * Elle va aussi permettre un nouveau appele de la fonction drawSubMenu
+	 * Quand cette fonction est utilisee la variable isSubMenu est mise a true automatiquement
+	 * Elle va aussi permettre un nouvel appel de la fonction drawSubMenu
 	 *
-	 * @param sub Les Item du sous menu de cette Item.
+	 * @param sub Les Items du sous-menu de cette item
 	 */
 	public void addChilds(Item[] sub) {
 		subMenu = sub;
@@ -298,7 +294,7 @@ public class Item extends CPolyLine {
 	}
 
 	/**
-	 * @brief Cree et places les element du sous menu dans le canvas
+	 * @brief Cree et place les elements du sous-menu dans le canvas
 	 */
 	private void drawSubMenu() {
 
@@ -329,7 +325,7 @@ public class Item extends CPolyLine {
 	}
 
 	/**
-	 *  @brief Affiche le sous menu de l'item avec une animation
+	 *  @brief Affiche le sous-menu de l'item avec une animation
 	 */
 	private void showSubMenu() {
 		if(isSubMenu){
@@ -360,10 +356,10 @@ public class Item extends CPolyLine {
 	}
 
 	/**
-	 * @brief Ferme le sous menu si celui ci est ouvert.
+	 * @brief Ferme le sous-menu si celui-ci est ouvert
 	 */
 	public void closeSubMenus() {
-		if (isSubMenu && isSubDrawed && Itemcanvas.getTag("menu-" + id)!=null) {
+		if (isSubMenu & isSubDrawed) {
 			timer = null;
 
 			Itemcanvas.getTag("menu-" + id).setDrawable(false).setPickable(false);
@@ -385,7 +381,7 @@ public class Item extends CPolyLine {
 	}
 
 	/**
-	 * Cette fonction est appelée par le Menu quand la souris entre dans l'Item.
+	 * Cette fonction est appelee par le menu quand la souris entre dans l'item
 	 */
 	public void onMouseEnter() {
 
@@ -408,16 +404,16 @@ public class Item extends CPolyLine {
 	}
 
 	/**
-	 *  Cette fonction est appelée par le Menu quand la souris quitte dans l'Item.
+	 *  Cette fonction est appelee par le menu quand la souris quitte l'item
 	 */
 	public void onMouseLeave() {
 		if (mouseIsIn) {
 
 			mouseIsIn = false;
-			if (this.isSubMenu){
+			if (this.isSubMenu) {
 
 				if (!getMouseIsIn()) {
-					
+
 					timer = new Timer();
 					TimerTask task = new TimerTask() {
 
@@ -437,9 +433,9 @@ public class Item extends CPolyLine {
 			}
 		}
 	}
-	
+
 	/**
-	 *  Cette fonction est appelée par le Menu quand cette Item a ete selectionne.
+	 *  Cette fonction est appelee par le menu quand cet item a ete selectionne
 	 */
 	public void actionDo(){
 		System.out.println("Action");
@@ -451,7 +447,7 @@ public class Item extends CPolyLine {
 
 	/**
 	 *
-	 * @return Le numero d'identifiant de l'Item
+	 * @return Le numero d'identifiant de l'item
 	 */
 	public int getId() {
 		return id;
@@ -459,7 +455,7 @@ public class Item extends CPolyLine {
 
 	/**
 	 *
-	 * @return la couleur de l'Item
+	 * @return la couleur de l'item
 	 */
 	public Color getColor() {
 		return color;
@@ -467,7 +463,7 @@ public class Item extends CPolyLine {
 
 	/**
 	 *
-	 * @return si Oui ou Non l'Item a un sous Menu
+	 * @return si oui ou non l'item a un sous-menu
 	 */
 	public Boolean getIsSubMenu() {
 		return isSubMenu;
@@ -483,7 +479,7 @@ public class Item extends CPolyLine {
 
 	/**
 	 *
-	 * @return Le niveau de l'Item par rapport ou sous menu. Il peut etre aussi calculer mais on le garde dans une variable
+	 * @return Le niveau de l'item par rapport au sous-menu. Il peut etre aussi calcule mais on le garde dans une variable
 	 */
 	public int getLevel() {
 		return level;
@@ -491,7 +487,7 @@ public class Item extends CPolyLine {
 
 	/**
 	 *
-	 * @return L'Item parent de cette Item si celui ci est dans un sous menu
+	 * @return L'item parent de cette item si celui-ci est dans un sous-menu
 	 */
 	public Item getItemParent() {
 		return itemParent;
@@ -499,7 +495,7 @@ public class Item extends CPolyLine {
 
 	/**
 	 *
-	 * @return le Rayon exterieur de cercle
+	 * @return le rayon exterieur de cercle
 	 */
 	public int getRadiusMax() {
 		return radiusMax;
@@ -507,7 +503,7 @@ public class Item extends CPolyLine {
 
 	/**
 	 *
-	 * @return le Rayon interieur de cercle
+	 * @return le rayon interieur de cercle
 	 */
 	public int getRadiusMin() {
 		return radiusMin;
@@ -515,19 +511,19 @@ public class Item extends CPolyLine {
 
 	/**
 	 *
-	 * @return le style avec le qu'elle s'ouvre le sous Menu
+	 * @return le style avec lequel s'ouvre le sous-menu
 	 */
 	public int getStyle() {
 		return SubMenuStyle;
 	}
 
 	/**
-	 * @brief tyle le style avec le qu'elle vous voulez que le sous menu s'ouvre
+	 * @brief le style avec lequel on veut que le sous-menu s'ouvre
 	 *
-	 * Si cette fonction est appele apres que l4item est ete dessiner(la fonction DrawIt appele)
-	 * A ce moment la in n'aura aucun effet.
+	 * Si cette fonction est appelee apres que l'item ait ete dessine (la fonction DrawIt appelee),
+	 * A ce moment la il n'y aura aucun effet
 	 *
-	 * @param style le style avec le qu'elle vous voulez que le sous menu s'ouvre
+	 * @param style le style avec lequel on veut que le sous-menu s'ouvre
 	 */
 	public void setStyle(int style) {
 		if(!isSubDrawed)
@@ -535,9 +531,9 @@ public class Item extends CPolyLine {
 	}
 
 	/**
-	 * @brief Controle d'une facon recursive si la souris est dans un des sous Item
+	 * @brief Controle d'une facon recursive si la souris est dans un des sous item
 	 *
-	 * @return Si la souris est dans l'Item ou un de ses sous Menu
+	 * @return Si la souris est dans l'item ou un de ses sous-menu
 	 */
 	public Boolean getMouseIsIn() {
 		if (mouseIsIn) {
@@ -556,8 +552,8 @@ public class Item extends CPolyLine {
 
 	/**
 	 *
-	 * @param item l'Item que on veut controler.
-	 * @return Si oui ou non l'item passe en parametre est le itemParent ou arriere grand itemParent de cette Item.
+	 * @param item l'item que on veut controler
+	 * @return Si oui ou non l'item passe en parametre est l'itemParent ou arriere grand itemParent de cette item
 	 */
 	public Boolean isFamilly(Item item){
 		if(itemParent != null && (item.id == this.id || item.id == itemParent.id) )
