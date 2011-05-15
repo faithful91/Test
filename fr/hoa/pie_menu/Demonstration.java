@@ -1,8 +1,8 @@
 package fr.hoa.pie_menu;
 
-import fr.hoa.pie_menu.demos.PanelBase;
-import fr.hoa.pie_menu.demos.PanelVariable;
-import fr.hoa.pie_menu.demos.PanelRecursif;
+import fr.hoa.pie_menu.demos.base.PanelBase;
+import fr.hoa.pie_menu.demos.variable.PanelVariable;
+import fr.hoa.pie_menu.demos.recursif.PanelRecursif;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import javax.swing.BorderFactory;
@@ -22,6 +22,7 @@ public class Demonstration extends JFrame {
 		super("Démonstration - Projet IG - Oliver Hamza Amirouche");
 		this.setSize(800, 600);
 		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		initComponents();
 		initDemos();
 	}
