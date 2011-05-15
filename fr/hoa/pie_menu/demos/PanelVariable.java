@@ -19,8 +19,8 @@ public class PanelVariable extends JPanel {
 
 	public PanelVariable() throws Exception{
 
-			final Color[] colors = {Color.WHITE, Color.MAGENTA, Color.BLUE, Color.CYAN, Color.GREEN, Color.YELLOW, Color.ORANGE, Color.RED, Color.WHITE, Color.MAGENTA, Color.BLUE, Color.CYAN, Color.GREEN, Color.YELLOW, Color.ORANGE, Color.RED};
-			final String[] labels = {"Blanc", "Violet", "Bleu", "Cyan", "Vert", "Jaune", "Orange", "Rouge", "Blanc", "Violet", "Bleu", "Cyan", "Vert", "Jaune", "Orange", "Rouge"};
+			final Color[] colors = {Color.WHITE, Color.MAGENTA, Color.BLUE , Color.CYAN, Color.GREEN, Color.YELLOW, Color.ORANGE, Color.RED, Color.WHITE, Color.MAGENTA, Color.BLUE, Color.CYAN, Color.GREEN, Color.YELLOW, Color.ORANGE, Color.RED};
+			final String[] labels = {"Blanc", "Violet", "Bleu" , "Cyan", "Vert", "Jaune", "Orange", "Rouge", "Blanc", "Violet", "Bleu", "Cyan", "Vert", "Jaune", "Orange", "Rouge"};
 			canvas = new Canvas();
 			menu = new Menu(canvas, labels, colors);
 
