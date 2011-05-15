@@ -4,7 +4,6 @@ import fr.lri.swingstates.canvas.CPolyLine;
 
 /**
  * Classe permettant le dessin et la gestion d'une portion de menu.
- * @author Amirouche HALFAOUI
  */
 public class Item extends CPolyLine {
 
