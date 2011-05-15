@@ -17,7 +17,6 @@ import javax.swing.JPanel;
 /**
  * Classe permettant de tester le menu récursif.
  * Démonstration avec possibilité de changer le style d'affichage des sous-menus
- * @author Amirouche HALFAOUI
  */
 public class PanelRecursif extends JPanel {
 

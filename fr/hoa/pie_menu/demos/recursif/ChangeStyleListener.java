@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 
 /**
  * Contrôleur permettant de chnager le style d'affichage
- * @author Amirouche HALFAOUI
  */
 public class ChangeStyleListener implements ActionListener{
 
@@ -31,8 +30,14 @@ public class ChangeStyleListener implements ActionListener{
 	 * @param e Description de l'événement enclencheur
 	 */
 	public void actionPerformed(ActionEvent e) {
+
+		// On détache d'abord la SM pour éviter les problèmes
 		parent.getCanvas().detachSM(parent.getMenu());
+
+		// On enlève toutes les formes du canvas
 		parent.getCanvas().removeAllShapes();
+
+		// On demande une reconstruction du menu
 		parent.createMenu(menuStyle);
 	}
 
