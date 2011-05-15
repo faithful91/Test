@@ -1,4 +1,4 @@
-package fr.hoa.pie_menu.base;
+package fr.hoa.pie_menu.menu.base;
 import fr.lri.swingstates.canvas.CStateMachine;
 import fr.lri.swingstates.canvas.CText;
 import fr.lri.swingstates.canvas.Canvas;
@@ -13,6 +13,8 @@ import java.awt.Paint;
 import java.awt.event.*;
 
 /**
+ * Classe correspondant à la machine à états.
+ * Ici est chargé tout le menu, sont faits les dessins et la gestion d'événements.
  * @author Amirouche HALFAOUI
  */
 public class Menu extends CStateMachine{

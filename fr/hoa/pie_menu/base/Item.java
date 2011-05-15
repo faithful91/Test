@@ -1,4 +1,4 @@
-package fr.hoa.pie_menu.base;
+package fr.hoa.pie_menu.menu.base;
 import fr.lri.swingstates.canvas.CPolyLine;
 /**
  * Portion de menu, cette classe sert uniquement à dessiner une portion de menu.
