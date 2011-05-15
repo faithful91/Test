@@ -1,4 +1,4 @@
-package fr.hoa.pie_menu.recursif;
+package fr.hoa.pie_menu.menu.recursif;
 
 import java.util.Timer;
 import java.util.TimerTask;

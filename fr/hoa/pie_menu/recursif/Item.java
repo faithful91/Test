@@ -1,4 +1,4 @@
-package fr.hoa.pie_menu.recursif;
+package fr.hoa.pie_menu.menu.recursif;
 
 import fr.lri.swingstates.animations.Animation;
 import fr.lri.swingstates.animations.AnimationScaleTo;
@@ -16,14 +16,14 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- *
+ * Classe permettant la gestion d'un item dans le cas du menu récursif
  * @author De Cramer Oliver
  */
 public class Item extends CPolyLine {
 
 	/**
-	 * Style par default avec lequel s'ouvrira les sous-menus
-	 * Ce style ouvrira un nouveau pie menu a cote de l'item parent
+	 * Style par défaut avec lequel s'ouvriront les sous-menus
+	 * Ce style ouvrira un nouveau pie menu à côté de l'item parent avec la même forme
 	 */
 	final public static int STYLE_DEFAULT = 0;
 
@@ -33,7 +33,7 @@ public class Item extends CPolyLine {
 	final public static int STYLE_CERCLES = 1;
 
 	/**
-	 * Ce style ouvrira un epouvantail a cote de l'item parent
+	 * Ce style ouvrira un éventail à côté de l'item parent
 	 */
 	final public static int STYLE_TRANCHE = 2;
 
@@ -43,64 +43,64 @@ public class Item extends CPolyLine {
 	protected String label;
 
 	/**
-	 * La couleur de l'item. Utilise pour mettre un fond d'une certaine couleur en arriere plan
+	 * La couleur de l'item. Utilisé pour mettre un fond d'une certaine couleur en arrière-plan
 	 */
 	protected Color color;
 
 	/**
-	 * Itemcanvas dans lequel on va dessiner
+	 * Canvas dans lequel on va dessiner l'item
 	 */
 	protected Canvas Itemcanvas;
 
 	/**
 	 * Pour pouvoir afficher le label, on va le placer dans un CText
-	 * Il va etre initialise par la fonction drawIt
+	 * Il va être initialisé par la fonction drawIt
 	 */
 	protected CText text;
 
 	private double angleSize;
 
 	/**
-	 * Si une translation est effectuee, quel valeur a t'elle
-	 * Celle-ci peut etre utilisee pour afficher les sous-menus dans un certain SubMenuStyle
+	 * Si une translation est effectuée, la valeur qu'elle a est stockée
+	 * Celle-ci peut être utilisée pour afficher les sous-menus dans un certain SubMenuStyle
 	 */
 	protected double transPosX;
 	protected double transPosY;
 	protected int rotated;
 
 	/**
-	 * Le niveau de l'item par rapport au sous menu. Il peut etre aussi calcule mais on le garde dans une variable
+	 * Le niveau de l'item par rapport au sous menu. Il peut être aussi calculé mais on le garde dans une variable
 	 */
 	private int level;
 
 	/**
-	 * Le nombre total d'item qui ont ete crees
+	 * Le nombre total d'items qui ont été créés
 	 * Permet le calcul d'un ID unique par Item
 	 */
 	protected static int nbItem = 0;
 
 	/**
-	 * Le numero d'identification de l'item
-	 * Celui ci est tres important, surtout pour les sous-menus qui utiliseront celui de leur parent comme tag
+	 * Le numéro d'identification de l'item
+	 * Celui-ci est très important, surtout pour les sous-menus qui utiliseront celui de leur parent comme tag
 	 * Il est calcule automatiquement
 	 */
 	private int id;
 
 	/**
-	 * La taille du cercle exterieur et interieur
-	 * Dans certain type d'affichage, nous allons utilise des tailles variables
+	 * La taille du cercle extérieur et intérieur
+	 * Dans certains types d'affichage, nous allons utiliser des tailles variables
 	 */
 	protected int radiusMax;
 	protected int radiusMin;
 
 	/**
-	 * Les items du sous-menu de cette item
-	 * Chaque item peut avoir son propre sous-menu, sans limite de recursivite
+	 * Les items du sous-menu de cet item
+	 * Chaque item peut avoir son propre sous-menu, sans limite de recursivité
 	 */
 	private Item[] subMenu = null;
 
 	/**
-	 * Si oui ou non cette item a un sous menu
+	 * Si oui ou non cet item a un sous menu
 	 */
 	private Boolean isSubMenu = false;
 
@@ -271,7 +271,7 @@ public class Item extends CPolyLine {
 	}
 
 	/**
-	 * @brief L'action a effectuer quand cette item est utilise
+	 * @brief L'action à effectuer quand cet item est utilisé
 	 *
 	 * @param actionListener
 	 */
@@ -282,7 +282,7 @@ public class Item extends CPolyLine {
 	/**
 	 * @brief Permet d'ajouter un sous-menu a cette item
 	 *
-	 * Quand cette fonction est utilisee la variable isSubMenu est mise a true automatiquement
+	 * Quand cette fonction est utilisée, la variable isSubMenu est mise a true automatiquement
 	 * Elle va aussi permettre un nouvel appel de la fonction drawSubMenu
 	 *
 	 * @param sub Les Items du sous-menu de cette item
@@ -438,7 +438,6 @@ public class Item extends CPolyLine {
 	 *  Cette fonction est appelee par le menu quand cet item a ete selectionne
 	 */
 	public void actionDo(){
-		System.out.println("Action");
 		if(actionListener != null){
 			ActionEvent e = new ActionEvent(this, id, "click");
 			actionListener.actionPerformed(e);
